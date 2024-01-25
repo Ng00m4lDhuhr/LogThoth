@@ -1,4 +1,4 @@
-![some kickass logo](https://github.com/Ng00m4lDhuhr/LogThoth/blob/main/Logo.png?raw=true)
+![some kickass logo](https://github.com/Ng00m4lDhuhr/LogThoth/blob/main/Logo.png)
 # LogThoth : Super Targeted Timeline Tool
 the goal of this project is to automate logs filteration processes for incident responders and digital forensics investigators. The tool functionality is separated in 3 different parts, each cooperate to enhance the analysis process.
 
@@ -8,7 +8,7 @@ The component is acting as a middle ground between LogThoth [Timeline Module](ht
 ### Timeline
 As a core module that defines interesting events and activities that are proven valuable in security investigations.
 ### User Interface
-Transforms the python3 modules from functions to a tool that is usable from terminal or GUI alike.
+Transforms the python3 modules from code to a usable tool that is usable from terminal or GUI alike.
 
 References
 ---
