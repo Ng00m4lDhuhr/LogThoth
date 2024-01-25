@@ -4,9 +4,9 @@ the goal of this project is to automate logs filteration processes for incident 
 
 ## Software Components
 ### Serializer
-The component is acting as a middle ground between LogThoth [Timeline Module]() application and Windows Event Logs, creating events to add to a generated timeline. 
+The component is acting as a middle ground between LogThoth [Timeline Module](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624) application and Windows Event Logs, creating events to add to a generated timeline. 
 ### Timeline
-Module that defines interesting events and activities that are proven valuable in security investigations.
+As a core module that defines interesting events and activities that are proven valuable in security investigations.
 ### User Interface
 Transforms the python3 modules from functions to a tool that is usable from terminal or GUI alike.
 
