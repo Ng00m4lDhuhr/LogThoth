@@ -5,4 +5,5 @@ the goal of this project is to automate logs filteration processes for incident 
 ---
 ### References
 [Article: Learning win32evtlog in python](https://ph20eow.gitbook.io/tech-stuff/silketw/learning-win32evtlog-in-python)
+
 [Docs: win32evtlog](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
