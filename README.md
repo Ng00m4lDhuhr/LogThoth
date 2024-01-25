@@ -5,4 +5,6 @@ the goal of this project is to automate logs filteration processes for incident 
 ---
 ### References
 * Article: [Learning win32evtlog in python](https://ph20eow.gitbook.io/tech-stuff/silketw/learning-win32evtlog-in-python)
-* Docs: [win32evtlog](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
+* Docs: [win32evtlog module](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
+* Docs: [EventLogRecord Object](https://timgolden.me.uk/pywin32-docs/PyEventLogRecord.html)
+* Docs: [Windows Event Log 4624](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624)
