@@ -10,8 +10,8 @@ As a core module that defines interesting events and activities that are proven 
 ### User Interface
 Transforms the python3 modules from functions to a tool that is usable from terminal or GUI alike.
 
+References
 ---
-### References
 * Article: [Learning win32evtlog in python](https://ph20eow.gitbook.io/tech-stuff/silketw/learning-win32evtlog-in-python)
 * Docs: [win32evtlog module](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
 * Docs: [EventLogRecord Object](https://timgolden.me.uk/pywin32-docs/PyEventLogRecord.html)
