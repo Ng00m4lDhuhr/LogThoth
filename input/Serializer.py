@@ -3,6 +3,7 @@ from itertools import chain
 import string
 import time
 import re
+import Timeline
 
 class LogStack(object):
     
@@ -76,12 +77,41 @@ class LogStack(object):
             for index in indices:
                 output.append(events[index])
 
-
-
     
+# 6005,6006,6013
+                
+    def GetPowerUp(self,log_type:str):
+        return self.read_event_logs([12],log_type)
+
+    def GetShutDown(self,log_type:str):
+        return self.read_event_logs([13],log_type)
+
+    def GetUserLogin(self,log_type:str):
+        return self.read_event_logs([4624],log_type)
+
+    def GetUserLogout(self,log_type:str):
+        return self.read_event_logs([4647],log_type)
+    
+    def GetProcess(self,log_type:str):
+        return self.read_event_logs([4688],log_type)
+    
+    # def GetConnection(self):
+    #     return self.read_event_logs(["4624"])
+
+
+    def GetBootEvent(self,log_type:str)-> list:
+        PowerUp = self.GetPowerUp(log_type)
+        ShutDown = self.GetShutDown(log_type)
+        Boot = []
+        for i in range(len(PowerUp)-1):
+
+            Boot.append(Timeline.Boot(PowerUp[i+1],ShutDown(i)))
+        
+        return Boot
+        
 
     @staticmethod
-    def read_event_logs(log_type:str) -> list:
+    def read_event_logs(EventID:list,log_type:str) -> list:
         # Open the specified event log
         handle = win32evtlog.OpenEventLog(None, log_type)
 
@@ -89,9 +119,14 @@ class LogStack(object):
         flags = win32evtlog.EVENTLOG_BACKWARDS_READ | win32evtlog.EVENTLOG_SEQUENTIAL_READ
 
         # Read all events
-        events = win32evtlog.ReadEventLog(handle, flags, 0)
+        Events_list = []
+        events = 1
         while events:
-            events += win32evtlog.ReadEventLog(handle, flags, 0)
+            events = win32evtlog.ReadEventLog(handle, flags, 0)
+            for event in events:
+                if event.EventID in EventID:
+                    Events_list.append(event)
+
             
             # for event in events:
             #    print(f"Event Name: {event.EventType}")
@@ -104,7 +139,7 @@ class LogStack(object):
 
         # Close the event log
         win32evtlog.CloseEventLog(handle)
-        return events
+        return Events_list
 
 
 
@@ -113,10 +148,7 @@ if __name__ == "__main__":
     # Logs.read_event_logs('Setup')
     LogTypes = ['System', 'Security', 'Application','Setup']
     stack = LogStack()
-    logs = []
-    for logType in LogTypes:
-        logs.append(stack.read_event_logs(logType))
-    logs = list(chain.from_iterable(logs))
+    boot = stack.GetBootEvent(LogTypes[0])
 
 
 
