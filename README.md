@@ -1,8 +1,8 @@
 ![some kickass logo](https://github.com/Ng00m4lDhuhr/LogThoth/blob/main/Logo.png)
 # LogThoth : Super Targeted Timeline Tool
-the goal of this project is to automate logs filteration processes for incident responders and digital forensics investigators. The tool functionality is separated in 3 different parts, each cooperate to enhance the analysis process.
+the goal of this project is to automate logs filteration processes for incident responders and digital forensics investigators in the analysis cycle. The tool functionality is separated in 3 different components, each cooperate to enhance the analysis process of log viewing in a siemless environment.
 
-## Software Components
+## Components
 ### Serializer
 The component is acting as a middle ground between LogThoth [Timeline Module](https://github.com/Ng00m4lDhuhr/LogThoth/blob/main/#timeline) application and Windows Event Logs, creating events to add to a generated timeline. 
 ### Timeline
