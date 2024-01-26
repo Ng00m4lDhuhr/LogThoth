@@ -1,5 +1,5 @@
 # Module should save logs parameters that we are interested in security wise
-
+# The values within would be displayed in the UI
 from datetime import datetime
                     
 class Activity(object):
@@ -33,13 +33,6 @@ class Activity(object):
 
     def __ge__(self, other) -> bool:
         return self > other or self == other
-
-
-
-class Connection(Activity):
-    def __init__(self, RID: int, timestamp: datetime) -> None:
-        # Refer to the process creating this ID by PID, SID, and LOGON ID
-        super().__init__(RID, timestamp)
     
 
 if __name__ == '__main__':
