@@ -80,29 +80,35 @@ class LogStack(object):
     
 # 6005,6006,6013
                 
-    def GetPowerUp(self,log_type:str):
-        return self.read_event_logs([12],log_type)
+    def GetPowerUp(self): # might not be necessary see "GetBootEvent()"
+        return self.read_event_logs([12],"System")
 
-    def GetShutDown(self,log_type:str):
-        return self.read_event_logs([13],log_type)
+    def GetShutDown(self): # might not be necessary see "GetBootEvent()"
+        return self.read_event_logs([13],"System")
 
-    def GetUserLogin(self,log_type:str):
-        return self.read_event_logs([4624],log_type)
+    def GetUserLogin(self):
+        return self.read_event_logs([4624],"Security")
 
-    def GetUserLogout(self,log_type:str):
-        return self.read_event_logs([4647],log_type)
-    
-    def GetProcess(self,log_type:str):
-        return self.read_event_logs([4688],log_type)
+    def GetUserLogout(self):
+        return self.read_event_logs([4647],"Security")
+
+    # TODO: yet to be planned as an activity
+    # def GetProcess(self,log_type:str):
+    #     return self.read_event_logs([4688],log_type)
     
     # def GetConnection(self):
     #     return self.read_event_logs(["4624"])
 
 
-    def GetBootEvent(self,log_type:str)-> list:
-        PowerUp = self.GetPowerUp(log_type)
-        ShutDown = self.GetShutDown(log_type)
+    def GetBootEvent(self) -> list:
         Boot = []
+        # TODO : read logs sequentially backwards (old --> future) once as the following (if you see applicable)
+            # EventRecords = self.read_event_logs([12,13],"System")
+            # if EventRecords[0].id == 13 : EventRecords = EventRecords[1::] # Skips a ShutDown without a previous PowerUp
+            # EventRecords = EventRecords[0::-1]  # skips the current PowerUp as we know what is happening rn
+            # for up, down in EventRecords : Boot += Timeline.Boot(up,down)
+        PowerUp = self.GetPowerUp()
+        ShutDown = self.GetShutDown()
         for i in range(len(PowerUp)-1):
 
             Boot.append(Timeline.Boot(PowerUp[i+1],ShutDown(i)))
@@ -148,7 +154,7 @@ if __name__ == "__main__":
     # Logs.read_event_logs('Setup')
     LogTypes = ['System', 'Security', 'Application','Setup']
     stack = LogStack()
-    boot = stack.GetBootEvent(LogTypes[0])
+    boot = stack.GetBootEvent()
 
 
 
