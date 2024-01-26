@@ -12,7 +12,8 @@ Transforms the python3 modules from code to a usable tool that is usable from te
 
 References
 ---
+* **Docs**: [Windows EventLog Auditing](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624)
+* **Docs**: [Windows EventLogRecord Class](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventing.reader.eventlogrecord?view=dotnet-plat-ext-7.0)
 * **Article**: [Learning win32evtlog in Python](https://ph20eow.gitbook.io/tech-stuff/silketw/learning-win32evtlog-in-python)
 * **Docs**: [Win32evtlog Module](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
 * **Docs**: [EventLogRecord Object](https://timgolden.me.uk/pywin32-docs/PyEventLogRecord.html)
-* **Docs**: [Windows Event Log 4624](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624)
