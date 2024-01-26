@@ -1,4 +1,4 @@
-![some kickass logo](https://github.com/Ng00m4lDhuhr/LogThoth/blob/main/Logo.png)
+![some kickass logo](https://github.com/Ng00m4lDhuhr/LogThoth/blob/main/Graphics/Logo.png)
 # LogThoth : Super Targeted Timeline Tool
 the goal of this project is to automate logs filteration processes for incident responders and digital forensics investigators in the analysis cycle. The tool functionality is separated in 3 different components, each cooperate to enhance the analysis process of log viewing in a siemless environment.
 
