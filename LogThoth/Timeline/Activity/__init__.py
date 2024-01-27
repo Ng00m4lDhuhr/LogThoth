@@ -8,9 +8,7 @@ from win32apievtlog import PyEventLogRecord
 PyEventLogRecord(
     int     RecordNumber,
     PyTime  TimeGenerated,
-    PyTime  TimeWritten,
     int     EventID,
-    PySID   Sid
     PyUnicode SourceName
     str     Data
 );
@@ -22,11 +20,12 @@ class Activity(object):
     # this is an abstract class that defines the minimal
     # data we should aquire from a windows event log object
     # This class should symbolize the building blocks of a timeline
-    def __init__(self,RID:int, timestamp:datetime) -> None:
+    def __init__(self, log: PyEventLogRecord) -> None:
         # It derives it's value and parameters from the raw log
         # This one is an abstract class that should save EventRecordID
-        self.RID = RID
-        self.time = timestamp
+        self.RID = log.RecordNumber
+        self.time = log.TimeGenerated
+        self.data = log.Data
 
     def is_before(self, time:datetime) -> bool:
         return self.time < time
