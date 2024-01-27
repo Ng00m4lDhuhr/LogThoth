@@ -1,6 +1,21 @@
 # Module should save logs parameters that we are interested in security wise
 # The values within would be displayed in the UI
+
 from datetime import datetime
+from win32apievtlog import PyEventLogRecord
+
+"""
+PyEventLogRecord(
+    int     RecordNumber,
+    PyTime  TimeGenerated,
+    PyTime  TimeWritten,
+    int     EventID,
+    PySID   Sid
+    PyUnicode SourceName
+    str     Data
+);
+"""
+        
                     
 class Activity(object):
     # a representation of windows logged activity
