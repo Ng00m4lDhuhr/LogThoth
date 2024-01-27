@@ -1,4 +1,4 @@
-import LogThoth.Timeline
+import LogThoth import *
 from datetime import datetime
 
 if __name__ == '__main__':
