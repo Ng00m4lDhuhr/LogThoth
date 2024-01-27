@@ -3,20 +3,20 @@
 from datetime import datetime
 from LogThoth.Timeline import Activity
 from LogThoth.Timeline.Event import Logon
-
+from win32apievtlog import PyEventLogRecord
 
 # Security Event ID 4688 indicate a creation of process
 class Creation(Activity): 
-    def __init__(self, RID: int, timestamp: datetime, file: str, logon: Logon) -> None:
-        super().__init__(RID, timestamp)
-        self.file = file
+    def __init__(self, log: PyEventLogRecord, logon: Logon) -> None:
+        super().__init__(log)
+        self.executable = log.Data   # should find how to parse the data section
         self.logon = logon
         
 # Security Event ID 4689 indicate a termination of process
 class Termination(Activity): 
-    def __init__(self, RID: int, timestamp: datetime, file: str, logon: Logon) -> None:
-        super().__init__(RID, timestamp)
-        self.file = file
+    def __init__(self, log: PyEventLogRecord, logon: Logon) -> None:
+        super().__init__(log)
+        self.executable = log.Data # should find how to parse the data section
         self.logon = logon 
 
 
