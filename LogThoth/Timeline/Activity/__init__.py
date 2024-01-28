@@ -2,7 +2,7 @@
 # The values within would be displayed in the UI
 
 from datetime import datetime
-from win32apievtlog import PyEventLogRecord
+# from win32evtlog import PyEventLogRecord
 
 """
 PyEventLogRecord(
@@ -20,7 +20,7 @@ class Activity(object):
     # this is an abstract class that defines the minimal
     # data we should aquire from a windows event log object
     # This class should symbolize the building blocks of a timeline
-    def __init__(self, log: PyEventLogRecord) -> None:
+    def __init__(self, log: object) -> None:
         # It derives it's value and parameters from the raw log
         # This one is an abstract class that should save EventRecordID
         self.RID = log.RecordNumber
