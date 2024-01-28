@@ -17,3 +17,4 @@ References
 * **Article**: [Learning win32evtlog in Python](https://ph20eow.gitbook.io/tech-stuff/silketw/learning-win32evtlog-in-python)
 * **Docs**: [Win32evtlog Module](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
 * **Docs**: [EventLogRecord Object](https://timgolden.me.uk/pywin32-docs/PyEventLogRecord.html)
+* **Code**: [win32evtlog module source](https://github.com/mhammond/pywin32/blob/main/win32/src/win32evtlog.i)
