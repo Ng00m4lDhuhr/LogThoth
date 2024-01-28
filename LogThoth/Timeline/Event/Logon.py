@@ -1,5 +1,5 @@
 from LogThoth.Timeline import Event
-from LogThoth.Timline.Activity import User
+from LogThoth.Timeline.Activity import User
 
 class Login(Event): # a duration where a certain user logged in and logged out
     def __init__(self, start:User.Login, end:User.Logout) -> None:

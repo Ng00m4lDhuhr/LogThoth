@@ -2,11 +2,7 @@ import win32evtlog
 from LogThoth.Timeline.Event import *
 from enum import Enum
 
-class LogType(Enum):
-    SETUP = 'Setup'
-    SYSTEM = 'System'
-    SECURITY = 'Security'
-    APP = 'Application'
+LogType = ['Setup','System','Security','Application']
 
 # Get Event By id
 def read_event_logs(EventID:list,log_type:str) -> list:
@@ -31,23 +27,40 @@ def read_event_logs(EventID:list,log_type:str) -> list:
 ######################
 
 def GetBootEvents() -> list:
-    Boot = []
+    boot = []
     # TODO : read logs sequentially backwards (old --> future) once as the following (if you see applicable)
-    EventRecords = read_event_logs([12,13],LogType.SYSTEM)
-    if EventRecords[0].id == 13 : EventRecords = EventRecords[1::] # Skips a ShutDown without a previous PowerUp
-    EventRecords = EventRecords[0::-1]  # skips the current PowerUp as we know what is happening rn
-    for up, down in EventRecords : Boot += Boot(up,down)
-    return Boot
+    EventRecords = read_event_logs([27,1074],LogType[1])
+    
+    if EventRecords[0].EventID == 27 : 
+        EventRecords = EventRecords[1::] # Skips a ShutDown without a previous PowerUp
+    
+    for i in range(0,len(EventRecords),2) :
+        boot += Boot(EventRecords[i].EventID,EventRecords[i+1].EventID)
+
+    return boot
 
 def GetLogonEvents(bootEvent: Event) -> list: 
-    # Query User login in Boot duration
-    # Return list of Logon object
-    pass
+    logon = []
+    # TODO : read logs sequentially backwards (old --> future) once as the following (if you see applicable)
+    EventRecords = read_event_logs([4624,4634],LogType[1])
+    # Do we really need to remove the first EVENT?!!
+    if EventRecords[0].EventID == 4624 : 
+        EventRecords = EventRecords[1::] # Skips a ShutDown without a previous PowerUp
+
+    for i in range(0,len(EventRecords),2) :
+        logon += Login(EventRecords[i].EventID,EventRecords[i+1].EventID)
+
+    return boot
 
 def GetExecutionEvents(logonEvent: Event) -> list:
-    # Query Processes execution and termination in duration of login
-    # Return list of Binary object
-    pass
+    binary = []
+    # TODO : read logs sequentially backwards (old --> future) once as the following (if you see applicable)
+    EventRecords = read_event_logs([4688,4689],LogType[1])
+    
+    for i in range(0,len(EventRecords),2) :
+        binary += Boot(EventRecords[i].EventID,EventRecords[i+1].EventID)
+
+    return boot
 
 if __name__ == "__main__":
     boot = GetBootEvents()

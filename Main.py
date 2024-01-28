@@ -5,6 +5,6 @@ if __name__ != '__main__':
   print('(!) Script should be ran as main only')
   exit()
   
-from LogThoth Import *
+from LogThoth import *
 
 # ENTER YOUR SCRIPT HERE
