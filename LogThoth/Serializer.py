@@ -1,5 +1,5 @@
 import win32evtlog
-from Timeline.Event import *
+from LogThoth.Timeline.Event import *
 from enum import Enum
 
 class LogType(Enum):
