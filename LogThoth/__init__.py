@@ -1,4 +1,4 @@
-import LogThoth import *
+from LogThoth import Timeline, Serializer
 from datetime import datetime
 
 if __name__ == '__main__':
