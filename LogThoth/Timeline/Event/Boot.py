@@ -1,5 +1,5 @@
-from LogThoth.Timeline import Event
-from LogThoth.Timline import Activity
+from Timeline import Event
+from Timeline import Activity
 
 class Boot(Event): 
     def __init__(self, start:Activity, end:Activity) -> None:

@@ -3,7 +3,7 @@
 # refer to said logs implicitly within it's parameters
 
 from datetime import datetime
-from Logthoth.Timeline import Activity
+from Timeline import Activity
 
 class Event(object): 
     # an object that symbolize the an event that has a non-zero duration

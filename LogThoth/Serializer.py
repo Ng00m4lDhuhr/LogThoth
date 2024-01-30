@@ -1,5 +1,5 @@
 import win32evtlog
-from LogThoth.Timeline.Event import *
+from Timeline.Event import *
 from enum import Enum
 
 LogType = ['Setup','System','Security','Application']
@@ -35,11 +35,11 @@ def GetBootEvents() -> list:
         EventRecords = EventRecords[1::] # Skips a ShutDown without a previous PowerUp
     
     for i in range(0,len(EventRecords),2) :
-        boot += Boot(EventRecords[i].EventID,EventRecords[i+1].EventID)
+        boot += Event.Boot.Boot(EventRecords[i].EventID,EventRecords[i+1].EventID)
 
     return boot
 
-def GetLogonEvents(bootEvent: Event) -> list: 
+def GetLogonEvents() -> list: 
     logon = []
     # TODO : read logs sequentially backwards (old --> future) once as the following (if you see applicable)
     EventRecords = read_event_logs([4624,4634],LogType[1])
@@ -48,7 +48,7 @@ def GetLogonEvents(bootEvent: Event) -> list:
         EventRecords = EventRecords[1::] # Skips a ShutDown without a previous PowerUp
 
     for i in range(0,len(EventRecords),2) :
-        logon += Login(EventRecords[i].EventID,EventRecords[i+1].EventID)
+        logon += Event.Logon.Login(EventRecords[i].EventID,EventRecords[i+1].EventID)
 
     return boot
 
@@ -58,7 +58,7 @@ def GetExecutionEvents(logonEvent: Event) -> list:
     EventRecords = read_event_logs([4688,4689],LogType[1])
     
     for i in range(0,len(EventRecords),2) :
-        binary += Boot(EventRecords[i].EventID,EventRecords[i+1].EventID)
+        binary += Event.Execution.Binary(EventRecords[i].EventID,EventRecords[i+1].EventID)
 
     return boot
 
