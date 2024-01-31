@@ -27,79 +27,120 @@ def Combine(timeEVT_1,timeEVT_2):
     index_event_1 = -1
     index_event_2 = -1
     result = []
+    
     for i in range(len(timeEVT_1)):
+        index_event_1 = -1
+        index_event_2 = -1
         for j in range(len(timeEVT_2)):
             date_time1 = datetime.strptime(timeEVT_1[i], '%Y-%m-%d %H:%M:%S')
             date_time2 = datetime.strptime(timeEVT_2[j], '%Y-%m-%d %H:%M:%S')
-            cmp = abs(date_time1 - date_time2)
+            cmp = abs(date_time1.timestamp() - date_time2.timestamp())
 
-            if cmp.total_seconds() < min and date_time1 < date_time2:
-                min = cmp.total_seconds()
+            if cmp < min and date_time1 < date_time2:
+                min = cmp
                 index_event_1 = i
                 index_event_2 = j
 
-        result.append([timeEVT_1[index_event_1],timeEVT_2[index_event_2]])
+        if index_event_1 > -1 and index_event_2 > -1:
+            result.append([timeEVT_1[index_event_1],timeEVT_2[index_event_2]])
     
     return result
 
-def get_event_logs(event_id):
+def get_event_logs(query):
     c = wmi.WMI()
 
     # Query the Win32_NTLogEvent class for events with the specified Event ID
-    query = f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = {event_id}"
+
     events = c.query(query)
 
     event_list = []
 
     for event in events:
-        # event_info = {
-        #     "TimeGenerated": event.TimeGenerated,
-        #     "Message": event.Message,
-        # }
+
         event_list.append(event)
 
     return event_list
 
+def CheckIsInteractive(evts):
+    final_evts = []
+    for event in evts:
+        msgs = event.Message.split('\r\n')
+        for msg in msgs:
+            if "Logon Type" in msg:
+                type = msg[-1]
+                if msg[-1] == "2":
+                    final_evts.append(event)
+    return final_evts
 
+def LoginCombine(LoginEvts,LogOffEvts):
+    result = []
+    for login in LoginEvts:
+        for logoff in LogOffEvts:
+            loginData = getData(login.Message)
+            logoffData = getData(logoff.Message)
+            if loginData["Logon ID"] == logoffData["Logon ID"] and loginData["Security ID"] == logoffData["Security ID"]:
+                result.append([TimeFromat(login.TimeGenerated),TimeFromat(logoff.TimeGenerated)])
+    return result
 
+                
+def getData(msg:str):
+    data = {}
+    msg = msg.split('\r\n')
+    for value in msg:
+        value = value.strip('\t')
+        value = value.split(':')
+        try:
+            data[value[0]] = value[1].strip("\t")
+        except IndexError:
+            pass
+    return data
+
+                
 def GetBoot():
-    tmpEvt27 = []
-    tmpEvt1074 = []
-    evt_27 = get_event_logs(27)
-    evt_1074 = get_event_logs(1074)
+    TimeEvt27 = []
+    TimeEvt1074 = []
+    evt_27 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 27")
+    evt_1074 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 1074")
 
     for event in evt_27:
-        tmpEvt27.append(TimeFromat(event.TimeGenerated))
+        TimeEvt27.append(TimeFromat(event.TimeGenerated))
     
     for event in evt_1074:
-        tmpEvt1074.append(TimeFromat(event.TimeGenerated))
+        TimeEvt1074.append(TimeFromat(event.TimeGenerated))
     
-    BootTimeLine = Combine(tmpEvt27,tmpEvt1074)
+    BootTimeLine = Combine(TimeEvt27,TimeEvt1074)
 
     return BootTimeLine
 
 
 def GetLogIn():
-    tmpEvt4624 = []
-    tmpEvt4634 = []
-    evt_4624 = get_event_logs(4624)
-    evt_4634 = get_event_logs(4634)
+    FilterdEvt4624 = []
+    FilterdEvt4634 = []
+    evt_4624 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 4624")
+    evt_4634 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 4634")
 
     for event in evt_4624:
-        tmpEvt4624.append(TimeFromat(event.TimeGenerated))
+        data = getData(event.Message)
+        if data["Logon Type"] == "2":
+        # if data["Security ID"].startswith("S-1-5-21"):
+            FilterdEvt4624.append(event)
     
     for event in evt_4634:
-        tmpEvt4634.append(TimeFromat(event.TimeGenerated))
-    
-    LoginTimeLine = Combine(tmpEvt4624,tmpEvt4634)
+        data = getData(event.Message)
+        if data["Logon Type"] == "2":
+        # if data["Security ID"].startswith("S-1-5-21"):
+            FilterdEvt4634.append(event)
+
+    # remove Duplicate
+    # FilterdEvt4624 = list(set(FilterdEvt4624))
+    # FilterdEvt4634 = list(set(FilterdEvt4634))
+        
+    LoginTimeLine = LoginCombine(FilterdEvt4624,FilterdEvt4634)
 
     return LoginTimeLine
 
-# def GetBoot():
-#     pass
 
+Log = GetLogIn()
 
-Boot = GetBoot()
-
-for event in Boot:
-    print(event[0]+"-"*10+event[1])
+for i in Log:
+    print(i[0]+"-"*10+i[1])
