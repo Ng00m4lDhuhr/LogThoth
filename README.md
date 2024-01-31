@@ -19,3 +19,4 @@ References
 * **Docs**: [EventLogRecord Object](https://timgolden.me.uk/pywin32-docs/PyEventLogRecord.html)
 * **Code**: [win32evtlog module source](https://github.com/mhammond/pywin32/blob/main/win32/src/win32evtlog.i)
 * **Repo**: [Process tree from logs](https://github.com/williballenthin/process-forest/tree/master)
+* **Docs**: [Windows SID](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers)
