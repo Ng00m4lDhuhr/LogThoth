@@ -81,9 +81,8 @@ def LoginCombine(LoginEvts,LogOffEvts):
             if loginData["Logon ID"] == logoffData["Logon ID"] and loginData["Security ID"] == logoffData["Security ID"]:
                 result.append([TimeFromat(login.TimeGenerated),TimeFromat(logoff.TimeGenerated)])
     return result
-
                 
-def getData(msg:str):
+def getData(msg):
     data = {}
     msg = msg.split('\r\n')
     for value in msg:
@@ -94,7 +93,6 @@ def getData(msg:str):
         except IndexError:
             pass
     return data
-
                 
 def GetBoot():
     TimeEvt27 = []
@@ -111,7 +109,6 @@ def GetBoot():
     BootTimeLine = Combine(TimeEvt27,TimeEvt1074)
 
     return BootTimeLine
-
 
 def GetLogIn():
     FilterdEvt4624 = []
@@ -138,6 +135,7 @@ def GetLogIn():
     LoginTimeLine = LoginCombine(FilterdEvt4624,FilterdEvt4647)
 
     return LoginTimeLine
+
 
 
 Log = GetLogIn()
