@@ -18,3 +18,4 @@ References
 * **Docs**: [Win32evtlog Module](https://timgolden.me.uk/pywin32-docs/win32evtlog.html)
 * **Docs**: [EventLogRecord Object](https://timgolden.me.uk/pywin32-docs/PyEventLogRecord.html)
 * **Code**: [win32evtlog module source](https://github.com/mhammond/pywin32/blob/main/win32/src/win32evtlog.i)
+* **Repo**: [Process tree from logs](https://github.com/williballenthin/process-forest/tree/master)
