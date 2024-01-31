@@ -23,12 +23,12 @@ def TimeFromat(time):
     return formated_time
 
 def Combine(timeEVT_1,timeEVT_2):
-    min = np.inf
     index_event_1 = -1
     index_event_2 = -1
     result = []
     
     for i in range(len(timeEVT_1)):
+        min = np.inf
         index_event_1 = -1
         index_event_2 = -1
         for j in range(len(timeEVT_2)):
@@ -115,27 +115,27 @@ def GetBoot():
 
 def GetLogIn():
     FilterdEvt4624 = []
-    FilterdEvt4634 = []
+    FilterdEvt4647 = []
     evt_4624 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 4624")
-    evt_4634 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 4634")
+    evt_4647 = get_event_logs(f"SELECT * FROM Win32_NTLogEvent WHERE EventCode = 4647")
 
     for event in evt_4624:
         data = getData(event.Message)
-        if data["Logon Type"] == "2":
-        # if data["Security ID"].startswith("S-1-5-21"):
+        # if data["Logon Type"] == "2":
+        if data["Security ID"].startswith("S-1-5-21"):
             FilterdEvt4624.append(event)
     
-    for event in evt_4634:
+    for event in evt_4647:
         data = getData(event.Message)
-        if data["Logon Type"] == "2":
-        # if data["Security ID"].startswith("S-1-5-21"):
-            FilterdEvt4634.append(event)
+        # if data["Logon Type"] == "2":
+        if data["Security ID"].startswith("S-1-5-21"):
+            FilterdEvt4647.append(event)
 
     # remove Duplicate
     # FilterdEvt4624 = list(set(FilterdEvt4624))
-    # FilterdEvt4634 = list(set(FilterdEvt4634))
+    # FilterdEvt4647 = list(set(FilterdEvt4647))
         
-    LoginTimeLine = LoginCombine(FilterdEvt4624,FilterdEvt4634)
+    LoginTimeLine = LoginCombine(FilterdEvt4624,FilterdEvt4647)
 
     return LoginTimeLine
 
