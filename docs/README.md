@@ -1,10 +1,10 @@
 # Documentation
 
 ## Documentation Principles
-* Clear words are not always simple
+* clear != simple
 
   word should be very descriptive of what you are saying, we cannot afford to leave anything to the imagination of the reader.
-* Increase dependency to decrease complexity
+* Dependency > Complexity
 
   if some concept is too complex to explain, it would be better to just link to another article/video/documentation that does it better that you would
 * Nothing is True
