@@ -1,7 +1,7 @@
 # Documentation
 
 ## Documentation Principles
-* clear != simple
+* Clearity != Simplicity
 
   word should be very descriptive of what you are saying, we cannot afford to leave anything to the imagination of the reader.
 * Dependency > Complexity
