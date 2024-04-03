@@ -12,4 +12,5 @@ References
 * **Article**: [Learning win32evtlog in Python](https://ph20eow.gitbook.io/tech-stuff/silketw/learning-win32evtlog-in-python)
 * **Code**: [win32evtlog module source](https://github.com/mhammond/pywin32/blob/main/win32/src/win32evtlog.i)
 * **Repo**: [Process tree from logs](https://github.com/williballenthin/process-forest/tree/master)
+* **Repo**: [log2timeline](https://github.com/log2timeline/plaso/tree/main/plaso/)
 
