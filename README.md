@@ -13,4 +13,6 @@ References
 * **Code**: [win32evtlog module source](https://github.com/mhammond/pywin32/blob/main/win32/src/win32evtlog.i)
 * **Repo**: [Process tree from logs](https://github.com/williballenthin/process-forest/tree/master)
 * **Repo**: [log2timeline](https://github.com/log2timeline/plaso/tree/main/plaso/)
+* **Video**: [Introduction to Plaso Heimdall](https://www.youtube.com/watch?v=JZGfhd1PNhU)
+* **Video**: [Forensic Timeline Creation](https://www.youtube.com/watch?v=JZGfhd1PNhU&t=19s&pp=ygUFcGxhc28%3D)
 
