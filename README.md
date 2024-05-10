@@ -15,6 +15,6 @@ References
 * **Repo**: [log2timeline](https://github.com/log2timeline/plaso/tree/main/plaso/)
   * **Docs**: [winevtx Parser API](https://plaso.readthedocs.io/en/latest/sources/api/plaso.parsers.html#module-plaso.parsers.winevtx)
   * **Docs**: [winevt Parser API](https://plaso.readthedocs.io/en/latest/sources/api/plaso.parsers.html#plaso.parsers.winevt.WinEvtParser)
-* **Video**: [Introduction to Plaso Heimdall](https://www.youtube.com/watch?v=JZGfhd1PNhU)
-* **Video**: [Forensic Timeline Creation](https://www.youtube.com/watch?v=JZGfhd1PNhU&t=19s&pp=ygUFcGxhc28%3D)
+  * **Video**: [Introduction to Plaso Heimdall](https://www.youtube.com/watch?v=JZGfhd1PNhU)
+  * **Video**: [Forensic Timeline Creation](https://www.youtube.com/watch?v=JZGfhd1PNhU&t=19s&pp=ygUFcGxhc28%3D)
 
