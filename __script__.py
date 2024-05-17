@@ -100,14 +100,14 @@ def CreateTimeLine(BootTimeLine,LoginTimeLine,ProcessTimeLine):
     tmp = []
 
     for Boot in BootTimeLine:
-        Timeline.append([Boot[1],"Boot"]) # Append the start time and Type of the evt
+        Timeline.append([Boot[1],"Boot"]) # Append the start time and Type of the event
         for login in LoginTimeLine:
             # check that the start time of login is greater than the boot start time
             Boot_time = datetime.strptime(Boot[1], '%Y-%m-%d %H:%M:%S')
             LogIn_time = datetime.strptime(login[1], '%Y-%m-%d %H:%M:%S')
 
             if LogIn_time > Boot_time and LogIn_time not in tmp:
-                # Append the start and end time , user and Type of the evt
+                # Append the start and end time, user, and Type of the event
                 Timeline.append([login[1],"Login",login[0]["Account Name"]])
                 tmp.append(LogIn_time)
                 for Process in ProcessTimeLine:
@@ -146,7 +146,7 @@ def PrintTimeLine(TimeLine):
         print(Style.RESET_ALL)
 
 def SHA256_Hash(process_path):
-    Size = 65536  # lets read stuff in 64kb chunks!
+    Size = 65536  # let's read stuff in 64kb chunks!
     sha256 = hashlib.sha256()
     try:
         with open(process_path, 'rb') as f:
