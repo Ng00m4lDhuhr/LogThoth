@@ -3,7 +3,7 @@
 the goal of this project is to automate logs collection and filteration for DFIR investigators to assesst in the timeline analysis.
 
 # Study Materials
----
+
 ## Operating System Documentation
 ### Windows
 * **Docs**: [Windows EventLog Auditing](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624)
