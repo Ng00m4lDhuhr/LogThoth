@@ -1,5 +1,5 @@
 
-# LogThoth : Super Targeted Timeline Tool
+# LogThoth : Super Targetable Timeline Tool
 the goal of this project is to automate logs collection and filteration for DFIR investigators to assesst in the timeline analysis.
 
 # Study Materials
