@@ -13,7 +13,8 @@ def yara_detection(path):
     try:
         matches = keylogger_rule.match(path)
         if matches: return True
-    except: pass
+    except yara.Error as e:
+        print(f"Yara Error: {e}")
     return False
 
 def banner():
