@@ -21,4 +21,5 @@ the goal of this project is to automate logs collection and filteration for DFIR
   * **Video**: [Introduction to Plaso Heimdall](https://www.youtube.com/watch?v=JZGfhd1PNhU)
   * **Video**: [Forensic Timeline Creation](https://www.youtube.com/watch?v=JZGfhd1PNhU&t=19s&pp=ygUFcGxhc28%3D)
   * **Video**: [GRR timelines in Timesketch using dfTimewolf](https://www.youtube.com/watch?v=758E4qMV4JA)
+  * **Article**: [Git for beginners](https://www.linkedin.com/pulse/introduction-git-beginners-github-tsznc/?trackingId=TeqgsBOoKXcpN93BN1ThgQ%3D%3D)
 
