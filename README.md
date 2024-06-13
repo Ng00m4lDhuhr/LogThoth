@@ -12,7 +12,7 @@ the goal of this project is to automate logs collection and filteration for DFIR
 
 ## Similar Tools
 * **Repo**: [TimeSketch](https://github.com/google/timesketch)
-* **Repo**: [Process tree from logs](https://github.com/williballenthin/process-forest/tree/master)
+* **Repo**: [Process Forest](https://github.com/williballenthin/process-forest/tree/master)
 * **Repo**: [Plaso](https://github.com/log2timeline/plaso/tree/main/plaso/)
 * **Repo**: [dfWolf](https://github.com/log2timeline/dftimewolf)
 
