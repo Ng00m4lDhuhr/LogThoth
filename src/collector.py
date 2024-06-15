@@ -19,5 +19,5 @@ if __name__ == '__main__':
         # TODO warn user if logs are not authenticated
         # evtx.get_file_header()
         # if evtx._fh.is_dirty() or not evtx._fh.verify(): raise IntegrityError("Log file has been manipulated")
-        records = [ record for record in evtx.records() ]
-        print(records[-1].lxml())
+        records = [ record.lxml() for record in evtx.records() ]
+    print(records[-1])
