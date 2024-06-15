@@ -1,27 +1,23 @@
 from Evtx.Evtx import Evtx
 from sys import argv, stderr
-from os import environ, path
+from system import windows
 
-# Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\
 
-class default(object):
-    try:
-        system_root = environ['SystemRoot']
-        if not path.isdir(system_root) : raise ValueError
-    except KeyError:
-        system_root = "C:\\Windows\\"
-    try:
-        logs_path = system_root + "\\winevt\\Logs\\"
-        if not path.isdir(logs_path) : raise ValueError
-    except ValueError:
-        print("you are gay",file=stderr)
+class IntegrityError(Exception):
+    """
+    class to handls log files integrity errors
+    """
+    pass
 
-def read_logs_file(file_path : str) -> list:
-    with Evtx(file_path) as evtx:
-        return [ record for record in evtx.records() ]
 
 if __name__ == '__main__':
-    try:
-        records = read_logs_file(argv[1])
-        print(records[0])
-    except IndexError: print("SYNTAX ERROR: no logs file path was given",file=stderr)
+    try: argv[1]
+    except IndexError:
+        print("SYNTAX ERROR: no logs file path was given",file=stderr)
+        exit()
+    with Evtx(windows.default.SecurityLogFilePath) as evtx:
+        # TODO warn user if logs are not authenticated
+        # evtx.get_file_header()
+        # if evtx._fh.is_dirty() or not evtx._fh.verify(): raise IntegrityError("Log file has been manipulated")
+        records = [ record for record in evtx.records() ]
+        print(records[-1].lxml())
