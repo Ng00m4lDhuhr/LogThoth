@@ -19,8 +19,8 @@ if __name__ == '__main__':
         evtlogs = {}
         evtlogs["security"] = load_security_records()
         evtlogs["system"] = load_system_records()
-        print(evtlogs["security"].find("./System/EventID")) # parsing attempts
-        print(evtlogs["system"].find("./System/EventID"))   # parsing attempts
+        print("Security Records:", len(evtlogs["security"]) ) 
+        print("System Records:", len(evtlogs["system"]) )  
     except KeyboardInterrupt:
         print("[i] aborted by user", file=stderr)
         quit()
