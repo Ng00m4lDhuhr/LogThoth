@@ -20,4 +20,6 @@ class query(object):
     @staticmethod
     def SystemRoot() -> str: return environ['SystemRoot']
 
+    @staticmethod
+    def HostName() -> str: return environ['COMPUTERNAME']
     # TODO query each evtx file path from registry key "\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\"
