@@ -30,11 +30,13 @@ def load_file_records(filepath: str, ignoreIntegrity: bool = False) -> list:
         return [ record.lxml() for record in evtx.records() ]
 
 # Defining namespace to handle parsing processs
-ns = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
 
 def parse_log_record(record) -> dict:
+    
     """Parse an EVTX log record and return a dictionary of its contents."""
+
     event_data = {}
+    ns = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
     
     try:
         event_data["EventID"] = record.find(".//e:EventID", namespaces=ns).text
@@ -54,11 +56,10 @@ def parse_log_record(record) -> dict:
 if __name__ == '__main__':
     from sys import argv, stderr
     from system import windows
-    from windows import DefaultPaths
-    
+
     try:
-        log_source = argv[1] if len(argv) > 1 else DefaultPaths.SECURITY_LOG_FILE_PATH
-        evt_logs = load_file_records(filepath=log_source, ignore_integrity=True)
+        log_source = argv[1] if len(argv) > 1 else windows.default.SecurityLogFilePath 
+        evt_logs = load_file_records(filepath=log_source, ignoreIntegrity=True)
         parsed_logs = [parse_log_record(log) for log in evt_logs]
         print(parsed_logs[0])  # Display first parsed log for testing
     except KeyboardInterrupt:
