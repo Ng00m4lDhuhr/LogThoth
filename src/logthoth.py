@@ -3,16 +3,16 @@ import collector
 from sys import argv, stderr
 from system import windows
 
-def load_security_records (filepath:str = None) -> list:
-    filepath = filepath or windows.default.SecurityLogFilePath
-    evt_logs = collector.load_file_records(filepath=filepath, ignoreIntegrity=True)
-    return [collector.parse_log_record(log) for log in evt_logs]
 
-def load_system_records   (filepath:str = None) -> list:
-    filepath = filepath or windows.default.SystemLogFilePath 
-    evt_logs = collector.load_file_records(filepath=filepath, ignoreIntegrity=True)
-    return [collector.parse_log_record(log) for log in evt_logs]
+def load_security_records (filepath:str=None) -> list:
+    # default path or given file path
+    filepath = filepath or windows.default.path['SecurityLogFile']
+    return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
+def load_system_records   (filepath:str=None) -> list:
+    # default path or given file path
+    filepath = filepath or windows.default.path['SystemLogFile']
+    return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
 
 if __name__ == '__main__':

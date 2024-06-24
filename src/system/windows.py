@@ -9,10 +9,13 @@ from os import environ, path
 
 # class instance to hold default pathes need for acqusition
 class default(object):
-    SystemRoot : str = "C:\\Windows"
-    LogFolderPath : str = SystemRoot + "\\system32\\winevt\\Logs"
-    SystemLogFilePath : str = LogFolderPath + "\\System.evtx"
-    SecurityLogFilePath : str = LogFolderPath + "\\Security.evtx"
+    
+    path : dict = {}
+    path["SystemRoot"]      = "C:\\Windows"
+    path["LogFolder"]       = path["SystemRoot"] + "\\system32\\winevt\\Logs"
+    path["SystemLogFile"]   = path["LogFolder"]  + "\\System.evtx"
+    path["SecurityLogFile"] = path["LogFolder"]  + "\\Security.evtx"
+    
 
 # static class to query live environment
 class query(object):

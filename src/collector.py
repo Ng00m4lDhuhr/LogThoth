@@ -8,9 +8,10 @@ class IntegrityError(Exception):
     """
     pass
 
-def validate_file_path(filepath: str) -> bool:
+  
+def assert_file_path(filepath: str) -> bool:
     """
-    class to validate if the provided path is a legitimate file path.
+    function to assert if the provided path is a legitimate file path.
     """
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"The file {filepath} does not exist.")
@@ -18,24 +19,24 @@ def validate_file_path(filepath: str) -> bool:
         raise ValueError(f"The path {filepath} is not a file.")
     return True
 
-def load_file_records(filepath: str, ignoreIntegrity: bool = False) -> list:
-    validate_file_path(filepath)
 
+def load_file_records(filepath: str, ignoreIntegrity: bool = False) -> list:
+    assert_file_path(filepath)
     with Evtx(filepath) as evtx:
         # TODO  warn user about logs integrity
         if not ignoreIntegrity:
             evtx.get_file_header()
             if evtx._fh.is_dirty() or not evtx._fh.verify():
-                raise IntegrityError("Log file has been manipulated")
+                raise IntegrityError("None trusted log source")
         return [ record.lxml() for record in evtx.records() ]
 
-# Defining namespace to handle parsing processs
 
 def parse_log_record(record) -> dict:
     
     """Parse an EVTX log record and return a dictionary of its contents."""
 
     event_data = {}
+    # Defining namespace to handle parsing processs
     ns = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
     
     try:
@@ -58,10 +59,11 @@ if __name__ == '__main__':
     from system import windows
 
     try:
-        log_source = argv[1] if len(argv) > 1 else windows.default.SecurityLogFilePath 
+        log_source = argv[1] if len(argv) > 1 else windows.default.path['SecurityLogFile'] 
         evt_logs = load_file_records(filepath=log_source, ignoreIntegrity=True)
         parsed_logs = [parse_log_record(log) for log in evt_logs]
         print(parsed_logs[0])  # Display first parsed log for testing
+
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)
     except Exception as e:
