@@ -34,9 +34,9 @@ if __name__ == '__main__':
     from sys import argv, stderr
     from system import windows
     try: logsource = argv[1]
-    except IndexError: logsource = windows.default.SecurityLogFilePath
+    except IndexError: logsource = windows.default.path['SecurityLogFile']
     try:
         evtlogs = load_file_records(filepath=logsource,ignoreIntegrity=True)
-        print(evtlogs[1].find("./System/EventID")) # parsing attempts
+        print(evtlogs[1].xpath("Event/System/EventID")) # parsing attempts
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)

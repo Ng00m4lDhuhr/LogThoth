@@ -5,12 +5,12 @@ from system import windows
 
 def load_security_records (filepath:str=None) -> list:
     # default path or given file path
-    filepath = filepath or windows.default.SecurityLogFilePath
+    filepath = filepath or windows.default.path['SecurityLogFile']
     return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
 def load_system_records   (filepath:str=None) -> list:
     # default path or given file path
-    filepath = filepath or windows.default.SystemLogFilePath
+    filepath = filepath or windows.default.path['SystemLogFile']
     return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
 
