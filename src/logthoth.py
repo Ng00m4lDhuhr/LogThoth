@@ -2,7 +2,7 @@
 import collector
 from sys import argv, stderr
 from system import windows
-
+from interface import LogEntry
 
 def load_security_records (filepath:str=None) -> list:
     # default path or given file path
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         
         # Optionally, print a sample record to check parsing
         if evt_logs["security"]:
-            print("Sample Security Record:", evt_logs["security"][0])
+            print("Sample Security Record:", LogEntry(evt_logs["security"][0]) )
         # if evt_logs["system"]: print("Sample System Record:", evt_logs["system"][0])
     except KeyboardInterrupt:
         print("[i] aborted by user", file=stderr)
