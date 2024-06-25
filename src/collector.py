@@ -1,6 +1,7 @@
 from Evtx.Evtx import Evtx
 import os
 from lxml import etree
+from interface import LogEntry
 
 class IntegrityError(Exception):
     """
@@ -31,28 +32,6 @@ def load_file_records(filepath: str, ignoreIntegrity: bool = False) -> list:
         return [ record.lxml() for record in evtx.records() ]
 
 
-def parse_log_record(record) -> dict:
-    
-    """Parse an EVTX log record and return a dictionary of its contents."""
-
-    event_data = {}
-    # Defining namespace to handle parsing processs
-    ns = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
-    
-    try:
-        event_data["EventID"] = record.find(".//e:EventID", namespaces=ns).text
-        event_data["TimeCreated"] = record.find(".//e:TimeCreated", namespaces=ns).get("SystemTime")
-        event_data["Computer"] = record.find(".//e:Computer", namespaces=ns).text
-        event_data["Channel"] = record.find(".//e:Channel", namespaces=ns).text
-        
-        data_elements = record.findall(".//e:Data", namespaces=ns)
-        for data in data_elements:
-            event_data[data.get("Name")] = data.text
-    except Exception as e:
-        print(f"Error parsing record: {e}")
-    
-    return event_data
-
 # driver/testing code
 if __name__ == '__main__':
     from sys import argv, stderr
@@ -61,7 +40,7 @@ if __name__ == '__main__':
     try:
         log_source = argv[1] if len(argv) > 1 else windows.default.path['SecurityLogFile'] 
         evt_logs = load_file_records(filepath=log_source, ignoreIntegrity=True)
-        parsed_logs = [parse_log_record(log) for log in evt_logs]
+        parsed_logs = [LogEntry(log) for log in evt_logs]
         print(parsed_logs[0])  # Display first parsed log for testing
 
     except KeyboardInterrupt:
