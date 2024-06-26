@@ -1,7 +1,7 @@
 from Evtx.Evtx import Evtx
 import os
 from lxml import etree
-from interface import LogEntry
+from interface import log
 
 class IntegrityError(Exception):
     """
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     try:
         log_source = argv[1] if len(argv) > 1 else windows.default.path['SecurityLogFile'] 
         evt_logs = load_file_records(filepath=log_source, ignoreIntegrity=True)
-        parsed_logs = [LogEntry(log) for log in evt_logs]
+        parsed_logs = [log.event(log) for log in evt_logs]
         print(parsed_logs[0])  # Display first parsed log for testing
 
     except KeyboardInterrupt:
