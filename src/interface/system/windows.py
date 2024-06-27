@@ -9,20 +9,26 @@ from os import environ, path
 
 # class instance to hold default pathes need for acqusition
 class default(object):
-    
+
     path : dict = {}
     path["SystemRoot"]      = "C:\\Windows"
     path["LogFolder"]       = path["SystemRoot"] + "\\system32\\winevt\\Logs"
     path["SystemLogFile"]   = path["LogFolder"]  + "\\System.evtx"
     path["SecurityLogFile"] = path["LogFolder"]  + "\\Security.evtx"
-    
+
 
 class logon(object):
-    type = [ None,
-        "local interactive", "network",            "batch",
-        "service",           "unlock",             "network clear text",
-        "new credentials",   "remote interactive", "cached interactive"
-    ]
+    type = {
+         2: "local interactive",
+         3: "network",
+         4: "batch",
+         5: "service",
+         7: "unlock",
+         8: "network clear text",
+         9: "new credentials",
+        10: "remote interactive",
+        11: "cached interactive"
+    }
     substatus = {
             # see https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4625#Failure_Information
             int("0xC0000064", 16): "non-existent username",
