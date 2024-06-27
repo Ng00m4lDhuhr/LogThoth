@@ -139,10 +139,10 @@ class evt4625(_logon):
 
 
 def classify(record:object) -> event:
-    # TODO
     """ function that decides the type of a log entry """
     if   4624 == int(record.find(".//e:EventID", namespaces=event.ns).text): return evt4624(record)
     elif 4625 == int(record.find(".//e:EventID", namespaces=event.ns).text): return evt4625(record)
+    # TODO
     # elif 4688 == int(record.find(".//e:EventID", namespaces=event.ns).text): pass
     # elif 4689 == int(record.find(".//e:EventID", namespaces=event.ns).text): pass
     else: return event(record) # idk idc
