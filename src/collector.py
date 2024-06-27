@@ -1,7 +1,4 @@
 from Evtx.Evtx import Evtx
-import os
-from lxml import etree
-from interface import log
 
 class IntegrityError(Exception):
     """
@@ -9,7 +6,7 @@ class IntegrityError(Exception):
     """
     pass
 
-  
+
 def assert_file_path(filepath: str) -> bool:
     """
     function to assert if the provided path is a legitimate file path.
@@ -28,13 +25,14 @@ def load_file_records(filepath: str, ignoreIntegrity: bool = False) -> list:
         if not ignoreIntegrity:
             evtx.get_file_header()
             if evtx._fh.is_dirty() or not evtx._fh.verify():
-                raise IntegrityError("None trusted log source")
+                raise IntegrityError("Untrusted log source")
         return [ record.lxml() for record in evtx.records() ]
 
 
 # driver/testing code
 if __name__ == '__main__':
     from sys import argv, stderr
+
     from interface.system import windows
 
     try:

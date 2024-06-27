@@ -4,6 +4,14 @@ from sys import argv, stderr
 from interface.system import windows
 from interface import log
 
+
+class CollectionError(Exception):
+  """class to signal log file reading errors"""
+
+class ParsingError(Exception):
+  """class to signal log file reading errors"""
+  
+  
 def load_security_records (filepath:str=None) -> list:
     # default path or given file path
     filepath = filepath or windows.default.path['SecurityLogFile']
@@ -17,19 +25,41 @@ def load_system_records   (filepath:str=None) -> list:
 
 if __name__ == '__main__':
     try:
+        evtlogs = {}
+        
         print("(~) collection phase...", end='\r')
-        evt_logs = {
-            "security": load_security_records(),
-            #"system": load_system_records()
-        }
-        print("(i) collected security records:", len(evt_logs["security"]))
-        #print("System Records:", len(evt_logs["system"]))
+        try:
+          evtlogs["security"] = load_security_records()
+          print("(i) collected security records:", len(evt_logs["security"]))
+        except Exception as e:
+          print("(!) cannot parse security file:",e, file=stderr)
+          
+        try:
+          evtlogs["system"] = load_system_records()
+          print("System Records:", len(evtlogs["system"]) )
+        except Exception as e:
+          print("(!) cannot parse system file:",e, file=stderr)
+          
         print("(~) parsing phase...", end='\r')
-        for event in evt_logs["security"]:
-            event = log.classify(event)
-        # Optionally, print a sample record to check parsing
-        if evt_logs["security"]:
-            print("Sample Security Record:", log.event(evt_logs["security"][0]) )
-        # if evt_logs["system"]: print("Sample System Record:", evt_logs["system"][0])
+        try:
+          for event in evt_logs["security"]: event = log.classify(event)
+        print("(i) parsing phase...done") 
+        except Exception as e:
+          print("(!) cannot parse security logs:", e, file=stderr)
+        
+        # print a sample record to check parsing
+        try:
+          if evtlogs["security"]:
+            print("Sample Security Record:", evt_logs["security"][0])
+        except KeyError: pass
+        except IndexError: pass
+     
+        try:
+          if evtlogs["system"]:
+            print("Sample Security Record:", evt_logs["system"][0])
+        except KeyError: pass
+        except IndexError: pass
+        
     except KeyboardInterrupt:
         print("[i] aborted by user", file=stderr)
+        quit()
