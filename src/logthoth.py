@@ -4,13 +4,13 @@ from sys import argv, stderr
 from system import windows
 
 def load_security_records (filepath:str=None) -> list:
-    if filepath == None:
-        filepath = windows.default.SecurityLogFilePath
+    # default path or given file path
+    filepath = filepath or windows.default.path['SecurityLogFile']
     return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
 def load_system_records   (filepath:str=None) -> list:
-    if filepath == None:
-        filepath = windows.default.SystemLogFilePath
+    # default path or given file path
+    filepath = filepath or windows.default.path['SystemLogFile']
     return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
 
