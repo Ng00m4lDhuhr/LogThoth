@@ -35,7 +35,7 @@ def load_file_records(filepath: str, ignoreIntegrity: bool = False) -> list:
 # driver/testing code
 if __name__ == '__main__':
     from sys import argv, stderr
-    from system import windows
+    from interface.system import windows
 
     try:
         log_source = argv[1] if len(argv) > 1 else windows.default.path['SecurityLogFile'] 

@@ -104,9 +104,6 @@ class _logon(event):
         return int(self.data("ProcessId"), 16)
 
 
-
-
-
 class evt4624(_logon):
     """
     class to ease access to EventData of successful logon attempts 
@@ -115,7 +112,8 @@ class evt4624(_logon):
      
     def __init__(self, record:object):
         super().__init__(record)
-        if self.id != 4624: raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4624")
+        if self.id != 4624: 
+            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4624")
 
 
 class evt4625(_logon):
@@ -130,12 +128,12 @@ class evt4625(_logon):
             raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4625")
         
     @property
-    def status(self, string=False) -> (int, str):
-       """substatus translation of failure reason"""
+    def status(self) -> int:
+       """status translation of failure reason"""
        pass
 
     @property 
-    def substatus(self) -> (int, str): 
+    def substatus(self) -> int: 
         """substatus translation of failure reason"""
         return int( self.data(SubStatus), 16 )
 
