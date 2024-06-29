@@ -143,7 +143,30 @@ class evt4688(event):
         if self.id != 4688:
             raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4688")
     
+    @property
+    def process_id(self) -> int:
+        """The ID of the process that was created."""
+        return int(self.data("NewProcessId"), 16)
+    
+    @property
+    def process_name(self) -> str:
+        """The name of the process that was created."""
+        return self.data("NewProcessName")
 
+    @property
+    def creator_process_id(self) -> int:
+        """The ID of the creator process."""
+        return int(self.data("ProcessId"), 16)
+
+    @property
+    def creator_process_name(self) -> str:
+        """The name of the creator process."""
+        return self.data("ProcessName")
+
+    @property
+    def command_line(self) -> str:
+        """The command line used to create the process."""
+        return self.data("CommandLine")
 
 def classify(record:object) -> event:
     """ function that decides the type of a log entry """
