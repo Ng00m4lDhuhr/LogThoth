@@ -65,22 +65,26 @@ class scope(object):
 
     def within(self, other:object) -> bool:
         if self.empty() or other.empty : raise TypeError("cannot compare empty scopes")
-        return (
-            (self.initial > other.initial) and
-            (self.final < other.final)
-        )
+        return (self > other) and (self.final > other.final)
  
     def encompass(self, other:object) -> bool:
-        return (
-            (self.initial < other.initial) and
-            (self.final > other.final)
-        )
+        return (self < other) and (self.final > other.final)
+
+    def checkcontext(self, event:log.event) -> bool: return True
 
     def insert(self, event:log.event) -> bool:
+        if not self.checkcontext(event): return False
         self.event.append(event)
         self.event.sort() # utilize the built-in algorithm called Timsort. 
         return True
 
+
 class session(scope):
     """class of a logon session context"""
-    pass
+    
+    def __init__(self, name:str=None, events:list=None) -> None:
+        super().__init__(name=name, events=events)
+
+    def checkcontext(self, event:log.event) -> bool:
+        # TODO filter by SID, computer, LogonID
+        pass

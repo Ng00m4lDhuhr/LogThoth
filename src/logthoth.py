@@ -1,6 +1,5 @@
 #!/user/bin/python3
 import collector
-from sys import argv, stderr
 from interface.system import windows
 from interface import log
 
@@ -24,6 +23,9 @@ def load_system_records   (filepath:str=None) -> list:
 
 
 if __name__ == '__main__':
+    
+    from sys import argv, stderr
+    
     try:
         evtlogs = {}
         
@@ -53,13 +55,13 @@ if __name__ == '__main__':
             print("Sample Security Record:", evt_logs["security"][0])
         except KeyError: pass
         except IndexError: pass
-     
+        
         try:
           if evtlogs["system"]:
             print("Sample Security Record:", evt_logs["system"][0])
         except KeyError: pass
         except IndexError: pass
-        
+        quit()
     except KeyboardInterrupt:
         print("[i] aborted by user", file=stderr)
         quit()

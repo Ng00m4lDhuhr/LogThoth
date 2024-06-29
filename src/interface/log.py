@@ -22,6 +22,27 @@ class event(object):
         # the hash consisting of computer:channel:record id
         return f"{self.computer}:{self.channel}:{self.rid}"
 
+    def __eq__(self,other:object) -> bool:
+        return ( 
+            (self.computer == other.computer) and
+            (self.channel == other.channel) and
+            (self.rid == other.rid)
+        )
+
+    # making events sortable based on time
+    def __gt__(self,other:object) -> bool:
+        return self.time > other.time
+    
+    def __lt__(self,other:object) -> bool:
+        return self.time < other.time
+    
+    def __ge__(self,other:object) -> bool:
+        return self.time >= other.time
+
+    def __le__(self,other:object) -> bool:
+        return self.time <= other.time
+
+
     # Event Record Property
 
     @property
@@ -74,7 +95,7 @@ class _logon(event):
         return self.data("TargetUserName")
     
     @property
-    def logonType(self) -> (int,str):
+    def logonType(self) -> int:
         """The LogonType property."""
         return int(self.data("LogonType"))   
     
