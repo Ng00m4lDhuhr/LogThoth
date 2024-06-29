@@ -24,46 +24,47 @@ def load_system_records   (filepath:str=None) -> list:
 
 
 if __name__ == '__main__':
-  start_time = time.time() #Start the timer
+    start_time = time.time() #Start the timer
     try:
         evtlogs = {}
         
         print("(~) collection phase...", end='\r')
         try:
-          evtlogs["security"] = load_security_records()
-          print("(i) collected security records:", len(evt_logs["security"]))
+            evtlogs["security"] = load_security_records()
+            print("(i) collected security records:", len(evtlogs["security"]))
+
         except Exception as e:
-          print("(!) cannot parse security file:",e, file=stderr)
+            print("(!) cannot parse security file:",e, file=stderr)
           
         try:
-          evtlogs["system"] = load_system_records()
-          print("System Records:", len(evtlogs["system"]) )
+            evtlogs["system"] = load_system_records()
+            print("System Records:", len(evtlogs["system"]) )
         except Exception as e:
-          print("(!) cannot parse system file:",e, file=stderr)
+            print("(!) cannot parse system file:",e, file=stderr)
           
         print("(~) parsing phase...", end='\r')
         try:
-          for event in evt_logs["security"]: event = log.classify(event)
-        print("(i) parsing phase...done") 
+            for event in evtlogs["security"]: event = log.classify(event)
+            print("(i) parsing phase...done") 
         except Exception as e:
-          print("(!) cannot parse security logs:", e, file=stderr)
+            print("(!) cannot parse security logs:", e, file=stderr)
         
         # print a sample record to check parsing
         try:
-          if evtlogs["security"]:
-            print("Sample Security Record:", evt_logs["security"][0])
+            if evtlogs["security"]:
+                print("Sample Security Record:", evtlogs["security"][0])
         except KeyError: pass
         except IndexError: pass
-     
+        
         try:
-          if evtlogs["system"]:
-            print("Sample Security Record:", evt_logs["system"][0])
+            if evtlogs["system"]:
+                print("Sample Security Record:", evtlogs["system"][0])
         except KeyError: pass
         except IndexError: pass
         
     except KeyboardInterrupt:
-        print("[i] aborted by user", file=stderr)
+        print("(i) aborted by user", file=stderr)
         quit()
-end_time = time.time() # End the timer
-elapsed_time = end_time - start_time # Calculate elapsed time
-print(f"Total execution time: {elapsed_time: .2f} seconds")
+    end_time = time.time() # End the timer
+    elapsed_time = end_time - start_time # Calculate elapsed time
+    print(f"Total execution time: {elapsed_time: .2f} seconds")

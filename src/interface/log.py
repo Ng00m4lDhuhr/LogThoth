@@ -199,13 +199,8 @@ def classify(record:object) -> event:
     """ Let's just get the EID one time, and save it in event_id"""
     event_id = int(record.find(".//e:EventID", namespaces=event.ns).text)
 
-    if event_id == 4624:
-        return evt4624(record)
-    elif event_id == 4625:
-        return evt4625(record)
-    elif event_id == 4688:
-        return evt4688(record)
-    elif event_id == 4689:
-        return evt4689(record)
-    else:
-        return event(record) #idk idc
+    if   event_id == 4624: return evt4624(record)
+    elif event_id == 4625: return evt4625(record)
+    elif event_id == 4688: return evt4688(record)
+    elif event_id == 4689: return evt4689(record)
+    else: return event(record) #idk idc

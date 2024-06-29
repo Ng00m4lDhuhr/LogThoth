@@ -1,4 +1,5 @@
 from Evtx.Evtx import Evtx
+from os import path
 
 class IntegrityError(Exception):
     """
@@ -11,9 +12,9 @@ def assert_file_path(filepath: str) -> bool:
     """
     function to assert if the provided path is a legitimate file path.
     """
-    if not os.path.exists(filepath):
+    if not path.exists(filepath):
         raise FileNotFoundError(f"The file {filepath} does not exist.")
-    if not os.path.isfile(filepath):
+    if not path.isfile(filepath):
         raise ValueError(f"The path {filepath} is not a file.")
     return True
 
