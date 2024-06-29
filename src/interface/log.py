@@ -138,6 +138,11 @@ class evt4625(_logon):
         return int( self.data(SubStatus), 16 )
 
 class evt4688(event):
+    """
+    Class to ease access to EventData of process creation.
+    See https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4688
+    """
+    
     def __init__(self, record: object):
         super().__init__(record)
         if self.id != 4688:
@@ -167,6 +172,27 @@ class evt4688(event):
     def command_line(self) -> str:
         """The command line used to create the process."""
         return self.data("CommandLine")
+
+class evt4689(event):
+    """
+    Class to ease access to EventData of process termination.
+    See https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4689
+    """
+
+    def __init__(self, record: object):
+        super().__init__(record)
+        if self.id != 4689:
+            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4689")
+
+    @property
+    def process_id(self) -> int:
+        """The ID of the process that was terminated."""
+        return int(self.data("ProcessId"), 16)
+
+    @property
+    def process_name(self) -> str:
+        """The name of the process that was terminated."""
+        return self.data("ProcessName")
 
 def classify(record:object) -> event:
     """ function that decides the type of a log entry """
