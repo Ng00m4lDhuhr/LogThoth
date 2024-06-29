@@ -9,7 +9,7 @@ class CollectionError(Exception):
   """class to signal log file reading errors"""
 
 class ParsingError(Exception):
-  """class to signal log file reading errors"""
+  """class to signal log file parsing errors"""
   
   
 def load_security_records (filepath:str=None) -> list:
