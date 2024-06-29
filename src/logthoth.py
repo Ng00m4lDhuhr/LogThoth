@@ -3,7 +3,7 @@ import collector
 from sys import argv, stderr
 from interface.system import windows
 from interface import log
-
+import time
 
 class CollectionError(Exception):
   """class to signal log file reading errors"""
@@ -24,6 +24,7 @@ def load_system_records   (filepath:str=None) -> list:
 
 
 if __name__ == '__main__':
+  start_time = time.time() #Start the timer
     try:
         evtlogs = {}
         
@@ -63,3 +64,6 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("[i] aborted by user", file=stderr)
         quit()
+end_time = time.time() # End the timer
+elapsed_time = end_time - start_time # Calculate elapsed time
+print(f"Total execution time: {elapsed_time: .2f} seconds")
