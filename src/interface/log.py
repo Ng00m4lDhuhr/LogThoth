@@ -137,6 +137,13 @@ class evt4625(_logon):
         """substatus translation of failure reason"""
         return int( self.data(SubStatus), 16 )
 
+class evt4688(event):
+    def __init__(self, record: object):
+        super().__init__(record)
+        if self.id != 4688:
+            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4688")
+    
+
 
 def classify(record:object) -> event:
     """ function that decides the type of a log entry """
@@ -153,13 +160,3 @@ def classify(record:object) -> event:
         return evt4689(record)
     else:
         return event(record) #idk idc
-    
-    """
-    if   4624 == int(record.find(".//e:EventID", namespaces=event.ns).text): return evt4624(record)
-    elif 4625 == int(record.find(".//e:EventID", namespaces=event.ns).text): return evt4625(record)
-    # TODO
-    #elif 4688 == int(record.find(".//e:EventID", namespaces=event.ns).text): pass
-    # elif 4689 == int(record.find(".//e:EventID", namespaces=event.ns).text): pass
-    else: return event(record) # idk idc
-    """
-
