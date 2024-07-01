@@ -1,6 +1,3 @@
-"""
-an interface to easily access xml data as if it was fully deserialized in a data structure
-"""
 from interface.system import windows
 
 class UnexpectedRecord(Exception):
@@ -61,6 +58,13 @@ class event(object):
         except KeyError: return None
 
 
+
+
+
+
+
+
+
 class _session(event):
     """class to ease access to session event logs"""
 
@@ -87,6 +91,7 @@ class _session(event):
         return int(self.data("TargetLogonId"), 16)
 
 
+
 class _logon(_session):
     """class to ease access to EventData of logon attempts """
 
@@ -98,7 +103,7 @@ class _logon(_session):
     def is_failure(self) -> bool: return self.id == 4625
 
     @property
-    def logonType(self) -> (int,str):
+    def logonType(self) -> int:
         """The LogonType property."""
         return int(self.data("LogonType"))
 
@@ -156,9 +161,14 @@ class evt4625(_logon):
         return int( self.data(SubStatus), 16 )
 
 
-class evt4647(_session):
+
+
+class _logoff(_session):
+    """class to ease access to session event logs"""
+
+class evt4647(_logoff):
     """
-    a class to ease access to EventData of logoff records
+    a class to ease access to EventData of logoff initiation records
     see https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4647
     """
 
@@ -166,6 +176,27 @@ class evt4647(_session):
         super().__init__(record)
         if self.id != 4647:
             raise UnexpectedRecord(f"given EventId is {self.id} expected 4647")
+
+class evt4634(_logoff):
+    """
+    a class to ease access to EventData of logoff confirmation records
+    see https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4634
+    """
+    def __init__(self, record:object):
+        super().__init__(record)
+        if self.id != 4634:
+            raise UnexpectedRecord(f"given EventId is {self.id} expected 4634")
+    @property
+    def logonType(self) -> int:
+        """The LogonType property."""
+        return int(self.data("LogonType"))
+
+
+
+
+
+
+
 
 
 
@@ -175,7 +206,7 @@ class _execution(event):
 
     def __init__(self, record:object) -> None:
         super().__init__(record)
-        if self.id != 4688 or self.id != 4689:
+        if self.id not in [4688, 4689]:
             raise UnexpectedRecord(f"given EventId is {self.id} expected any of 4688, 4689")
 
     @property
@@ -188,6 +219,8 @@ class _execution(event):
 
     def is_termination(self) -> bool:
         return self.id == 4689
+
+
 
 
 class evt4688(_execution):
@@ -256,9 +289,15 @@ class evt4689(_execution):
 
 
 
+
+
+
+
+
+
+
 def classify(record:object) -> event:
     """ function that decides the type of a log entry """
-    """ Let's just get the EID one time, and save it in event_id"""
     event_id = int(record.find(".//e:EventID", namespaces=event.ns).text)
 
     if   event_id == 4624: return evt4624(record)
@@ -266,3 +305,4 @@ def classify(record:object) -> event:
     elif event_id == 4688: return evt4688(record)
     elif event_id == 4689: return evt4689(record)
     else: return event(record) #idk idc
+
