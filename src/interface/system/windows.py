@@ -17,6 +17,7 @@ class default(object):
     path["SecurityLogFile"] = path["LogFolder"]  + "\\Security.evtx"
 
 # translates logon type codes
+
 class logon(object):
     type = {
          2: "local interactive",
