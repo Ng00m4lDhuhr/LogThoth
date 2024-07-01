@@ -1,4 +1,4 @@
-#!/user/bin/python3
+#!/usr/bin/python3
 import collector
 from sys import argv, stderr
 from interface.system import windows
@@ -57,19 +57,17 @@ if __name__ == '__main__':
         try:
             if evtlogs["security"]:
                 print("Sample Security Record:", evtlogs["security"][0])
-        except KeyError: pass
-        except IndexError: pass
+        except (KeyError, IndexError): pass
         
         try:
             if evtlogs["system"]:
                 print("Sample Security Record:", evtlogs["system"][0])
-        except KeyError: pass
-        except IndexError: pass
-        
+        except (KeyError, IndexError): pass
+        fetch_end_time = time.time() 
+      
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)
         quit()
-    fetch_end_time = time.time() 
     end_time = time.time() # End the timer
     
     # Calculate elapsed times
@@ -79,7 +77,7 @@ if __name__ == '__main__':
     fetching_time = fetching_end_time - fetching_start_time
 
     # Print the timings
-    print(f"Collection time: {collection_time:.2f} seconds")
-    print(f"Parsing time: {parsing_time:.2f} seconds")
+    print(f"Collection time:      {collection_time:.2f} seconds")
+    print(f"Parsing time:         {parsing_time:.2f} seconds")
     print(f"Fetching sample time: {fetching_time:.2f} seconds")
     print(f"Total execution time: {total_elapsed_time: .2f} seconds")
