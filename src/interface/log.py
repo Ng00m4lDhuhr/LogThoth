@@ -3,6 +3,9 @@ an interface to easily access xml data as if it was fully deserialized in a data
 """
 from interface.system import windows
 
+class UnexpectedRecord(Exception):
+    """class to signal invalid event log type"""
+
 class event(object):
 
     """ a class that acts as an interface to the etree of evtlogs records """
@@ -17,18 +20,16 @@ class event(object):
         return f"<record:{self.rid} machine:{self.computer} channel:{self.channel}>"
 
     def __hash__(self) -> str:
-        # record id is unique per channel, also 2 records from same channel 
-        # can have same record id from different windows device thus leaving 
+        # record id is unique per channel, also 2 records from same channel
+        # can have same record id from different windows device thus leaving
         # the hash consisting of computer:channel:record id
         return f"{self.computer}:{self.channel}:{self.rid}"
-
-    # Event Record Property
 
     @property
     def id(self) -> int:
         """The EventID property."""
         return int(self._record.find(".//e:EventID", namespaces=self.ns).text)
-    
+
     @property
     def time(self):
         """The TimeCreated property."""
@@ -60,28 +61,46 @@ class event(object):
         except KeyError: return None
 
 
-class _logon(event):
-    """
-    class to ease access to EventData of logon attempts 
-    """
+class _session(event):
+    """class to ease access to session event logs"""
 
     def __str__(self) -> str:
-        return f"<machine={self.computer}/user={self.username} logonid={self.id} type={self.type}>"
+        return f"<machine={self.computer} user={self.username} logonid={self.logonID}>"
+
+    def is_logon(self) -> bool: return self.id in [4624, 4625]
+
+    def is_logoff(self) -> bool: return self.id == 4647
 
     @property
     def username(self) -> str:
         """The target username property."""
         return self.data("TargetUserName")
-    
+
     @property
-    def logonType(self) -> (int,str):
-        """The LogonType property."""
-        return int(self.data("LogonType"))   
-    
+    def sid(self) -> str:
+        """ the TargetUserSid property"""
+        return self.data("TargetUserSid")
+
     @property
     def logonID(self) -> int:
         """The target logon id property."""
         return int(self.data("TargetLogonId"), 16)
+
+
+class _logon(_session):
+    """class to ease access to EventData of logon attempts """
+
+    def __str__(self) -> str:
+        return f"<machine={self.computer}/user={self.username} logonid={self.id} type={self.type}>"
+
+
+    def is_successful(self) -> bool: return self.id == 4624
+    def is_failure(self) -> bool: return self.id == 4625
+
+    @property
+    def logonType(self) -> (int,str):
+        """The LogonType property."""
+        return int(self.data("LogonType"))
 
     @property
     def process(self) -> str:
@@ -99,22 +118,21 @@ class _logon(event):
         return self.data("IpPort")
 
     @property
-    def pid(self) -> int: 
+    def pid(self) -> int:
         """the process id authenticating as user"""
         return int(self.data("ProcessId"), 16)
 
 
 class evt4624(_logon):
     """
-    class to ease access to EventData of successful logon attempts 
+    class to ease access to EventData of successful logon attempts
     see https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4624
     """
-     
+
     def __init__(self, record:object):
         super().__init__(record)
-        if self.id != 4624: 
-            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4624")
-
+        if self.id != 4624:
+            raise UnexpectedRecord(f"given EventId is {self.id} expected 4624")
 
 class evt4625(_logon):
     """
@@ -124,56 +142,92 @@ class evt4625(_logon):
 
     def __init__(self, record:object):
         super().__init__(record)
-        if self.id != 4625: 
-            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4625")
-        
+        if self.id != 4625:
+            raise UnexpectedRecord(f"given EventId is {self.id} expected 4625")
+
     @property
     def status(self) -> int:
        """status translation of failure reason"""
        pass
 
-    @property 
-    def substatus(self) -> int: 
+    @property
+    def substatus(self) -> int:
         """substatus translation of failure reason"""
         return int( self.data(SubStatus), 16 )
 
-class evt4688(event):
+
+class evt4647(_session):
+    """
+    a class to ease access to EventData of logoff records
+    see https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4647
+    """
+
+    def __init__(self, record:object):
+        super().__init__(record)
+        if self.id != 4647:
+            raise UnexpectedRecord(f"given EventId is {self.id} expected 4647")
+
+
+
+
+class _execution(event):
+    """Class to ease access to EventData of program executions."""
+
+    def __init__(self, record:object) -> None:
+        super().__init__(record)
+        if self.id != 4688 or self.id != 4689:
+            raise UnexpectedRecord(f"given EventId is {self.id} expected any of 4688, 4689")
+
+    @property
+    def domain(self) -> str:
+        """The ID of the process that was created."""
+        return self.data("SubjectDomainName")
+
+    def is_creation(self) -> bool:
+        return self.id == 4688
+
+    def is_termination(self) -> bool:
+        return self.id == 4689
+
+
+class evt4688(_execution):
     """
     Class to ease access to EventData of process creation.
     See https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4688
     """
-    
+
     def __init__(self, record: object):
         super().__init__(record)
         if self.id != 4688:
-            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4688")
-    
+            raise UnexpectedRecord(f"given EventId is {self.id} expected 4688")
+
     @property
-    def process_id(self) -> int:
+    def pid(self) -> int:
         """The ID of the process that was created."""
         return int(self.data("NewProcessId"), 16)
-    
+
     @property
-    def process_name(self) -> str:
+    def process(self) -> str:
         """The name of the process that was created."""
         return self.data("NewProcessName")
 
     @property
-    def creator_process_id(self) -> int:
-        """The ID of the creator process."""
+    def ppid(self) -> int:
+        """The ID of the parent process."""
         return int(self.data("ProcessId"), 16)
 
     @property
-    def creator_process_name(self) -> str:
-        """The name of the creator process."""
+    def parent(self) -> str:
+        """The name of the parent process."""
         return self.data("ProcessName")
 
     @property
-    def command_line(self) -> str:
+    def commandline(self) -> str:
         """The command line used to create the process."""
         return self.data("CommandLine")
 
-class evt4689(event):
+
+class evt4689(_execution):
     """
     Class to ease access to EventData of process termination.
     See https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4689
@@ -182,17 +236,25 @@ class evt4689(event):
     def __init__(self, record: object):
         super().__init__(record)
         if self.id != 4689:
-            raise ValueError(f"Unexpected Event: given EventId is {self.id} expected 4689")
+            raise UnexpectedRecord(f"given EventId is {self.id} expected 4689")
 
     @property
-    def process_id(self) -> int:
+    def pid(self) -> int:
         """The ID of the process that was terminated."""
         return int(self.data("ProcessId"), 16)
 
     @property
-    def process_name(self) -> str:
+    def process(self) -> str:
         """The name of the process that was terminated."""
         return self.data("ProcessName")
+
+    @property
+    def status(self) -> int:
+        """the process exit status of process"""
+        return int( self.data("Status"), 16)
+
+
+
 
 def classify(record:object) -> event:
     """ function that decides the type of a log entry """
