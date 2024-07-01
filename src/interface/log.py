@@ -17,16 +17,40 @@ class event(object):
         return f"<record:{self.rid} machine:{self.computer} channel:{self.channel}>"
 
     def __hash__(self) -> str:
-        # record id is unique per channel, also 2 records from same channel
-        # can have same record id from different windows device thus leaving
+
+        # record id is unique per channel, also 2 records from same channel 
+        # can have same record id from different windows device thus leaving 
         # the hash consisting of computer:channel:record id
         return f"{self.computer}:{self.channel}:{self.rid}"
+
+    def __eq__(self,other:object) -> bool:
+        return ( 
+            (self.computer == other.computer) and
+            (self.channel == other.channel) and
+            (self.rid == other.rid)
+        )
+
+    # making events sortable based on time
+    def __gt__(self,other:object) -> bool:
+        return self.time > other.time
+    
+    def __lt__(self,other:object) -> bool:
+        return self.time < other.time
+    
+    def __ge__(self,other:object) -> bool:
+        return self.time >= other.time
+
+    def __le__(self,other:object) -> bool:
+        return self.time <= other.time
+
+
+    # Event Record Property
 
     @property
     def id(self) -> int:
         """The EventID property."""
         return int(self._record.find(".//e:EventID", namespaces=self.ns).text)
-
+      
     @property
     def time(self):
         """The TimeCreated property."""
@@ -75,6 +99,7 @@ class _session(event):
 
     def is_logoff(self) -> bool: return self.id == 4647
 
+
     @property
     def username(self) -> str:
         """The target username property."""
@@ -107,6 +132,7 @@ class _logon(_session):
         """The LogonType property."""
         return int(self.data("LogonType"))
 
+
     @property
     def process(self) -> str:
         """the process authenticating a user"""
@@ -124,11 +150,13 @@ class _logon(_session):
 
     @property
     def pid(self) -> int:
+
         """the process id authenticating as user"""
         return int(self.data("ProcessId"), 16)
 
 
 class evt4624(_logon):
+
     """
     class to ease access to EventData of successful logon attempts
     see https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4624
@@ -138,6 +166,7 @@ class evt4624(_logon):
         super().__init__(record)
         if self.id != 4624:
             raise UnexpectedRecord(f"given EventId is {self.id} expected 4624")
+
 
 class evt4625(_logon):
     """
@@ -155,17 +184,17 @@ class evt4625(_logon):
        """status translation of failure reason"""
        pass
 
+
     @property
     def substatus(self) -> int:
         """substatus translation of failure reason"""
         return int( self.data(SubStatus), 16 )
 
 
-
-
 class _logoff(_session):
     """class to ease access to session event logs"""
 
+    
 class evt4647(_logoff):
     """
     a class to ease access to EventData of logoff initiation records
@@ -305,4 +334,5 @@ def classify(record:object) -> event:
     elif event_id == 4688: return evt4688(record)
     elif event_id == 4689: return evt4689(record)
     else: return event(record) #idk idc
+
 

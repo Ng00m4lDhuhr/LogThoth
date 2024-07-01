@@ -1,6 +1,7 @@
 from Evtx.Evtx import Evtx
 from os import path
 
+
 class IntegrityError(Exception):
     """
     class to handls log files integrity errors

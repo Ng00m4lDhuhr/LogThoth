@@ -5,11 +5,13 @@ from interface.system import windows
 from interface import log
 import time
 
+
 class CollectionError(Exception):
   """class to signal log file reading errors"""
 
 class ParsingError(Exception):
   """class to signal log file parsing errors"""
+
   
   
 def load_security_records (filepath:str=None) -> list:
@@ -34,6 +36,7 @@ def classify(record:object) -> log.event:
     else: return log.event(record) #idk idc
 
 if __name__ == '__main__':
+
     start_time = time.time()                        # run time marking
     try:
         evtlogs = {}
@@ -58,6 +61,7 @@ if __name__ == '__main__':
         except (KeyError, IndexError): pass
         fetch_end_time = time.time()                # run time marking
       
+
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)
         quit()
