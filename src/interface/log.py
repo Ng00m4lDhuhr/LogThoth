@@ -93,7 +93,7 @@ class _session(event):
     """class to ease access to session event logs"""
 
     def __str__(self) -> str:
-        return f"<machine={self.computer} user={self.username} logonid={self.logonID}>"
+        return f"<machine={self.computer} user={self.username} logonid={self.lid}>"
 
     def is_logon(self) -> bool: return self.id in [4624, 4625]
 
@@ -111,7 +111,7 @@ class _session(event):
         return self.data("TargetUserSid")
 
     @property
-    def logonID(self) -> int:
+    def lid(self) -> int:
         """The target logon id property."""
         return int(self.data("TargetLogonId"), 16)
 

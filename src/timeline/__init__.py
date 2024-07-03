@@ -96,14 +96,22 @@ class session(scope):
         super().__init__(name=self.name, events=events)
 
     def checkcontext(self, event:log.event) -> bool:
-        # TODO filter by SID, computer, LogonID
-        pass
+        # TODO assert by SID, computer, LogonID
+        if (
+            self.context.sid  == event.sid and
+            self.context.host == event.computer and
+            self.context.lid == event.lid
+        ): return True
+        else: return False
     
     def insert(self. event:log.event) -> bool:
         # first element must be a successful login
-        if self.empty(): 
-            assert event.is_logon
-            assert event.is_successful
+        try:
+            if self.empty(): assert event.is_logon and event.is_successful
+        except AssertionError: return False
+        
         # if last element is a logoff prevent insertion
         elif self.event[-1].is_logoff(): return False
-        super(session, self).insert(event)
+        
+        retun super(session, self).insert(event)
+

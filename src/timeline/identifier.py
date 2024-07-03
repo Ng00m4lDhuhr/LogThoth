@@ -12,7 +12,7 @@ class context(object):
 class session(context):
     """object to identify a session"""
     def __init__(self, sid:str, host:str, logonId:int, username:str=None):
-        self.logonId = int(logonId)     # live unique session id
+        self.lid = int(logonId)             # live unique session id
         self.sid = str(sid)             # user identifier
         self.username = username or ''  # current username
         self.host = str(host)           # hosting machine identifier
