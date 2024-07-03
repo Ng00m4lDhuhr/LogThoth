@@ -18,7 +18,7 @@ class scope(object):
         #       if a name was given do not increase counter
         
         if name == None: 
-            self.name = f"Activity #{self._counter}"
+            self.name = f"Activity #{scope._counter}"
             scope._counter += 1
         else : self.name = name
 
@@ -90,9 +90,20 @@ class scope(object):
 class session(scope):
     """class of a logon session context"""
     
-    def __init__(self, name:str=None, context:id.session=None, events:list=None) -> None:
-        super().__init__(name=name, events=events)
+    def __init__(self, context:id.session, name:str=None, events:list=None) -> None:
+        if name == None: 
+            name = f" User {context.username}@{context.host} Session"
+        super().__init__(name=self.name, events=events)
 
     def checkcontext(self, event:log.event) -> bool:
         # TODO filter by SID, computer, LogonID
         pass
+    
+    def insert(self. event:log.event) -> bool:
+        # first element must be a successful login
+        if self.empty(): 
+            assert event.is_logon
+            assert event.is_successful
+        # if last element is a logoff prevent insertion
+        elif self.event[-1].is_logoff(): return False
+        super(session, self).insert(event)
