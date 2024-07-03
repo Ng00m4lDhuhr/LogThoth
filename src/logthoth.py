@@ -12,6 +12,8 @@ class CollectionError(Exception):
 class ParsingError(Exception):
   """class to signal log file parsing errors"""
 
+class ContextError(Exception):
+  """class to signal context scope errors"""
   
   
 def load_security_records (filepath:str=None) -> list:
@@ -27,13 +29,17 @@ def classify(record:object) -> log.event:
     """ function that decides the type of a log entry """
     event_id = int(record.find(".//e:EventID", namespaces=log.event.ns).text)
 
-    if   event_id == 4624: return log.evt4624(record)
-    elif event_id == 4625: return log.evt4625(record)
-    elif event_id == 4634: return log.evt4634(record)
-    elif event_id == 4647: return log.evt4647(record)
-    elif event_id == 4688: return log.evt4688(record)
-    elif event_id == 4689: return log.evt4689(record)
-    else: return log.event(record) #idk idc
+    event_handlers = {
+        4624: log.evt4624,
+        4625: log.evt4625,
+        4634: log.evt4634,
+        4647: log.evt4647,
+        4688: log.evt4688,
+        4689: log.evt4689,
+    }
+    # Return the appropriate log event handler based on event_id,
+    # or default to log.event if event_id is not recognized.
+    return event_handlers.get(event_id, lambda r: log.event(r))(record)
 
 if __name__ == '__main__':
 
@@ -54,7 +60,7 @@ if __name__ == '__main__':
         parse_end_time = time.time()                # run time marking
         
         # print a sample record to check parsing
-        fetch_start_time = time.time()           # run time marking
+        fetch_start_time = time.time()              # run time marking
         try:
             if evtlogs["security"]:
                 print("Sample Security Record:", evtlogs["security"][0])
