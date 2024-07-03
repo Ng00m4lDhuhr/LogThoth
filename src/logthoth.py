@@ -42,7 +42,7 @@ def classify(record:object) -> log.event:
     return event_handlers.get(event_id, lambda r: log.event(r))(record)
 
 if __name__ == '__main__':
-
+    import time
     start_time = time.time()                        # run time marking
     try:
         evtlogs = {}
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         
         parse_start_time = time.time()              # run time marking
         print("(~) parsing phase...", end='\r')
-        for i in evtlogs["security"]: i = classify(i)
+        evtlogs["security"] = [classify(i) for i in evtlogs["security"]]
         print("(i) parsing phase...done") 
         parse_end_time = time.time()                # run time marking
         

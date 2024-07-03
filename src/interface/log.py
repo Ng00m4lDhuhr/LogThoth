@@ -75,7 +75,7 @@ class event(object):
     def data(self, ValueName:str) -> object:
         try: return self._data[str(ValueName)]
         except KeyError:
-            data_elements = record.findall(".//e:Data", namespaces=self.ns)
+            data_elements = self._record.findall(".//e:Data", namespaces=self.ns)
             for data in data_elements:
                 self._data[data.get("Name")] = data.text
         try: return self._data[str(ValueName)]
@@ -121,7 +121,7 @@ class _logon(_session):
     """class to ease access to EventData of logon attempts """
 
     def __str__(self) -> str:
-        return f"<machine={self.computer}/user={self.username} logonid={self.id} type={self.type}>"
+        return f"<machine={self.computer}/user={self.username} logonid={self.id} logontype={self.logonType}>"
 
 
     def is_successful(self) -> bool: return self.id == 4624
