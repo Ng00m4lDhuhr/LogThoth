@@ -3,7 +3,7 @@ import collector
 from sys import argv, stderr
 from interface.system import windows
 from interface import log
-import time
+import timeline
 
 
 class CollectionError(Exception):
@@ -66,7 +66,6 @@ if __name__ == '__main__':
                 print("Sample Security Record:", evtlogs["security"][0])
         except (KeyError, IndexError): pass
         fetch_end_time = time.time()                # run time marking
-      
 
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)

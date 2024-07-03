@@ -20,8 +20,7 @@ class session(context):
 
 class execution(context):
     """object to identify a program execution"""
-    def __init__(self,  pid:int, image:str, session:session):
-        self.session = session 
+    def __init__(self,  pid:int, image:str):
         self.image = str(image)
         self.pid = int(pid)
 
