@@ -91,18 +91,18 @@ class session(scope):
     """class of a logon session context"""
     
     def __init__(self, context:id.session, name:str=None, events:list=None) -> None:
+        self.context = context
         if name == None: 
             name = f" User {context.username}@{context.host} Session"
-        super().__init__(name=self.name, events=events)
+        super().__init__(name=name, events=events)
 
     def checkcontext(self, event:log.event) -> bool:
         # TODO assert by SID, computer, LogonID
-        if (
+        return (
             self.context.sid  == event.sid and
             self.context.host == event.computer and
             self.context.lid == event.lid
-        ): return True
-        else: return False
+        )
     
     def insert(self, event:log.event) -> bool:
         # first element must be a successful login
