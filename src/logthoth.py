@@ -26,7 +26,7 @@ def load_system_records   (filepath:str=None) -> list:
     return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
 
 def timeline_json_dump(scope:timeline.scope.scope, file:str='output.json') -> None:
-    value = scope.dict
+    value = scope.dict()
     with open(file, 'w') as f: 
         dump(value, f, indent=4)
     return None

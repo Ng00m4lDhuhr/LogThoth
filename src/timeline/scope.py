@@ -28,6 +28,7 @@ class scope(object):
             if not all(isinstance(item, log.event) for item in events):
                 raise ValueError(f"List should only contain interface.log.event class objects. found {type(i)}")
             events.sort()
+            self.event = events
         # empty scope case
         else: self.event : list = events or []
 
@@ -89,7 +90,7 @@ class scope(object):
     def dict(self) -> dict:
         value = {}
         count = 0
-        for item in self.events:
+        for item in self.event:
             value[count] = item.dict()
         return value
 
