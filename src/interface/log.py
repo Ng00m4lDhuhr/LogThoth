@@ -88,9 +88,11 @@ class event(object):
             "channel": self.channel,
             "computer": self.computer,
             "time": self.time,
+            "data": None
         }
-        self.data["pizza"]
+        self.data("pizza")
         value['data'] = self._data
+        return value
 
 
 

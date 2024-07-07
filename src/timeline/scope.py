@@ -5,6 +5,7 @@ This code should provide a container that encompasses all the logs within a defi
 
 from interface import log
 from timeline import context as id
+from json import dump
 
 class scope(object):
     """abstract/virtual container class of events within a specific context"""
@@ -24,9 +25,8 @@ class scope(object):
 
         # prelisted events case
         if type(events) is list:
-            for i in events:
-                if not( type(i) is log.event or type(i) is self.__class__): 
-                    raise ValueError(f"List should only contain interface.log.event class objects. found {type(i)}")
+            if not all(isinstance(item, log.event) for item in events):
+                raise ValueError(f"List should only contain interface.log.event class objects. found {type(i)}")
             events.sort()
         # empty scope case
         else: self.event : list = events or []
@@ -86,6 +86,12 @@ class scope(object):
         self.event.sort() # utilize the built-in algorithm called Timsort. 
         return True
 
+    def dict(self) -> dict:
+        value = {}
+        count = 0
+        for item in self.events:
+            value[count] = item.dict()
+        return value
 
 class session(scope):
     """class of a logon session context"""

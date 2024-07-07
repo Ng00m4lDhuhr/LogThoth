@@ -3,6 +3,7 @@ import collector
 from sys import argv, stderr
 from interface.system import windows
 from interface import log
+from json import dump
 import timeline
 
 
@@ -23,6 +24,12 @@ def load_security_records (filepath:str=None) -> list:
 def load_system_records   (filepath:str=None) -> list:
     filepath = filepath or windows.default.path['SystemLogFile']
     return collector.load_file_records(filepath=filepath,ignoreIntegrity=True)
+
+def timeline_json_dump(scope:timeline.scope.scope, file:str='output.json') -> None:
+    value = scope.dict
+    with open(file, 'w') as f: 
+        dump(value, f, indent=4)
+    return None
 
 
 def classify(record:object) -> log.event:
@@ -58,14 +65,22 @@ if __name__ == '__main__':
         evtlogs["security"] = [classify(i) for i in evtlogs["security"]]
         print("(i) parsing phase...done") 
         parse_end_time = time.time()                # run time marking
+       
+
+        scope_start_time = time.time()
+        print("(~) timeline creation phase...", end='\r')
+        supertimeline = timeline.scope.scope(name='super timeline', events=evtlogs["security"])
+        print("(i) timeline creation...done") 
+        scope_end_time = time.time()
         
         # print a sample record to check parsing
         fetch_start_time = time.time()              # run time marking
-        try:
-            if evtlogs["security"]:
-                print("Sample Security Record:", evtlogs["security"][0])
+        print("(~) output json...", end='\r')
+        try: timeline_json_dump(supertimeline)
         except (KeyError, IndexError): pass
+        print("(i) output json...done") 
         fetch_end_time = time.time()                # run time marking
+ 
 
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)
