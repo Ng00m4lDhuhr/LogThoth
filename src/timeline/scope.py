@@ -5,7 +5,6 @@ This code should provide a container that encompasses all the logs within a defi
 
 from interface import log
 from timeline import context as id
-from json import dump
 
 class scope(object):
     """abstract/virtual container class of events within a specific context"""
@@ -29,6 +28,7 @@ class scope(object):
                 raise ValueError(f"List should only contain interface.log.event class objects. found {type(i)}")
             events.sort()
             self.event = events
+
         # empty scope case
         else: self.event : list = events or []
 
@@ -92,6 +92,7 @@ class scope(object):
         for count, item in enumerate(self.event):
             value[count] = item.dict()
         return value
+
 
 class session(scope):
     """class of a logon session context"""

@@ -4,6 +4,7 @@ from sys import argv, stderr
 from interface.system import windows
 from interface import log
 from json import dump
+
 import timeline
 
 
@@ -75,12 +76,14 @@ if __name__ == '__main__':
         
         # print a sample record to check parsing
         fetch_start_time = time.time()              # run time marking
+
         print("(~) output json...", end='\r')
         try: timeline_json_dump(supertimeline)
         except (KeyError, IndexError): pass
         print("(i) output json...done") 
         fetch_end_time = time.time()                # run time marking
  
+
 
     except KeyboardInterrupt:
         print("(i) aborted by user", file=stderr)
