@@ -92,9 +92,11 @@ if __name__ == '__main__':
     collection_time = collection_end_time - collection_start_time
     parsing_time = parse_end_time - parse_start_time
     fetching_time = fetch_end_time - fetch_start_time
+    scoping_time = scope_end_time - scope_start_time 
 
     # Print the timings
     print(f"Collection time:      {collection_time:.2f} seconds")
     print(f"Parsing time:         {parsing_time:.2f} seconds")
+    print(f"Scoping time:         {scoping_time:.2f} seconds")
     print(f"Fetching sample time: {fetching_time:.2f} seconds")
     print(f"Total execution time: {total_elapsed_time: .2f} seconds")

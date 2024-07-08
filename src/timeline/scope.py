@@ -89,8 +89,7 @@ class scope(object):
 
     def dict(self) -> dict:
         value = {}
-        count = 0
-        for item in self.event:
+        for count, item in enumerate(self.event):
             value[count] = item.dict()
         return value
 
