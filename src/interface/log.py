@@ -81,8 +81,18 @@ class event(object):
         try: return self._data[str(ValueName)]
         except KeyError: return None
 
-
-
+    def dict(self) -> dict:
+        value = {
+            "id" : self.id,
+            "rid": self.rid,
+            "channel": self.channel,
+            "computer": self.computer,
+            "time": self.time,
+            "data": None
+        }
+        self.data("pizza")
+        value['data'] = self._data
+        return value
 
 
 
