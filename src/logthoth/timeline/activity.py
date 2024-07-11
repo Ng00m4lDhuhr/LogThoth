@@ -3,8 +3,8 @@ Each event log has enough info to understand the context of the record
 This code should provide a container that encompasses all the logs within a defined context
 """
 
-from interface import log
-from timeline import context as id
+from logthoth.interface import log
+from logthoth.timeline import context as id
 
 class scope(object):
     """abstract/virtual container class of events within a specific context"""

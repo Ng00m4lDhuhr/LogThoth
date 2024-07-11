@@ -3,8 +3,7 @@ The purpose of this code is to define default windows values
 and to query said values if have been simply changed
 """
 
-from sys import argv, stderr
-from os import environ, path
+from os import environ
 
 
 # class instance to hold default pathes need for acqusition

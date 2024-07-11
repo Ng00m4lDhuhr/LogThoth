@@ -1,4 +1,4 @@
-from interface.system import windows
+from logthoth.interface.system import windows
 
 class UnexpectedRecord(Exception):
     """class to signal invalid event log type"""
