@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import collector
-from sys import argv, stderr
 from interface.system import windows
 from interface import log
 from json import dump
@@ -51,13 +50,15 @@ def classify(record:object) -> log.event:
 
 if __name__ == '__main__':
     import time
+    from sys import argv, stderr
     start_time = time.time()                        # run time marking
     try:
         evtlogs = {}
         
         collection_start_time = time.time()         # run time marking
         print("(~) collection phase...", end='\r')
-        evtlogs["security"] = load_security_records()
+        try: evtlogs["security"] = load_security_records(argv[1])
+        except IndexError: evtlogs["security"] = load_security_records()
         collection_end_time = time.time()           # run time marking
         print("(i) collected security records:", len(evtlogs["security"]))
         
