@@ -1,4 +1,5 @@
+<img src="https://raw.github.com/Ng00m4lDhuhr/LogThoth/main/assets/banner-min.png">
 
-# LogThoth : Interactive Dynamic Timeline Tool
-the goal of this project is to automate logs parsing and correlation for DFIR investigators to assist in the timeline analysis.
+## About
+This is my graduation project aimed to automate logs parsing and correlation for Digital Froensics investigators to assist in the timeline analysis with a tree-like structure, each branch consists of activites within a defined context.
 
