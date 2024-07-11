@@ -8,12 +8,12 @@
   
 * Dependency > Complexity
 
-  if some concept is too complex to explain, it would be better to just link to another article/video/documentation that does it better that you wouldز
+  if some concept is too complex to explain, it would be better to just link to another article/video/documentation that does it better than you would
 
   
 * Nothing is True
 
-  This principles are guidelines that are to be broken if life demands it, just get it [done](https://www.youtube.com/watch?v=bJQj1uKtnus&pp=ygUQdGhlIGN1bHQgb2YgZG9uZQ%3D%3D), we can do it better next time.
+  These principles are guidelines that are to be broken if life demands it, just get it [done](https://www.youtube.com/watch?v=bJQj1uKtnus&pp=ygUQdGhlIGN1bHQgb2YgZG9uZQ%3D%3D), we can do it better next time.
 
 # Study Materials
 
