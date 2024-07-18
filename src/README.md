@@ -2,7 +2,7 @@
 This folder contains all the code of the tool. the entire program shouldn't require any references to other directories.
 
 # Modules
-The project has modular architecture. cross dependencies are disencouraged. 
+The project is an importable python module with modular architecture. cross dependencies are disencouraged yet allowed. 
 ## Interface
 This modules contains an abstracted classes to interact with complex systems and data. It should not provide any functional feature.
 ## Timeline

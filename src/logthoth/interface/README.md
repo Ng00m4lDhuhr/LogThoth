@@ -1,0 +1,1 @@
+A module to ease, simplify, and abstract access to information. Said info can be specific event logs, system environment...etc. it should not satisfy a functional requirement but rather make the implementation coder friendly.
